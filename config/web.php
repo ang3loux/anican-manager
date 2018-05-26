@@ -11,6 +11,9 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'as access' => [
+        'class' => 'app\components\AccessControl',
+    ],
     'components' => [
         'view' => [
             'theme' => [
