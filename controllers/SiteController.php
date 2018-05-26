@@ -125,4 +125,35 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
+    public function actionPassword()
+    {
+        $model = new \yii\base\DynamicModel(['oldPassword', 'newPassword']);
+        $model->addRule(['oldPassword','newPassword'], 'required');
+
+        if ($model->load(Yii::$app->request->post())) {
+            $user = Yii::$app->user->identity;
+            if ($user->validatePassword($model->oldPassword)) {
+                $user->setPassword($model->newPassword);
+                if ($user->save()) {
+                    Yii::$app->session->setFlash('success', 'Contraseña modificada exitosamente.');
+                    return $this->goHome();
+                }
+            }
+            Yii::$app->session->setFlash('error', 'Error al modificar la contraseña.');
+        }
+
+        return $this->render('password', ['model' => $model]);
+    }
+
+    public function validatePassword($attribute, $params)
+    {
+        if (!$this->hasErrors()) {
+            $user = $this->getUser();
+
+            if (!$user || !$user->validatePassword($this->password)) {
+                $this->addError($attribute, 'Usuario o contraseña incorrecto.');
+            }
+        }
+    }
 }
