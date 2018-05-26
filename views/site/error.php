@@ -22,22 +22,13 @@ $this->title = $name;
             </p>
 
             <p>
-                The above error occurred while the Web server was processing your request.
-                Please contact us if you think this is a server error. Thank you.
-                Meanwhile, you may <a href='<?= Yii::$app->homeUrl ?>'>return to dashboard</a> or try using the search
-                form.
+                El error anterior ocurrió mientras el servidor web estaba procesando su solicitud.            
+                Póngase en contacto con el administrador si cree que se trata de un error del servidor. Gracias.                
             </p>
 
-            <form class='search-form'>
-                <div class='input-group'>
-                    <input type="text" name="search" class='form-control' placeholder="Search"/>
-
-                    <div class="input-group-btn">
-                        <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            <p>
+                Mientras tanto, puedes <a href='<?= Yii::$app->homeUrl ?>'>retornar al Inicio</a>.
+            </p>
         </div>
     </div>
 

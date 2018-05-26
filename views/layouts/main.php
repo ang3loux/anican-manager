@@ -41,16 +41,17 @@ if (Yii::$app->controller->action->id === 'login') {
     <?php $this->beginBody() ?>
     <div class="wrapper">
 
-        <?= $this->render(
-            'header.php',
-            ['directoryAsset' => $directoryAsset]
-        ) ?>
+        <?php if (!Yii::$app->user->isGuest) {
+            echo $this->render(
+                'header.php',
+                ['directoryAsset' => $directoryAsset]
+            );
 
-        <?= $this->render(
-            'left.php',
-            ['directoryAsset' => $directoryAsset]
-        )
-        ?>
+            echo $this->render(
+                'left.php',
+                ['directoryAsset' => $directoryAsset]
+            );
+        } ?>
 
         <?= $this->render(
             'content.php',
