@@ -11,7 +11,7 @@ $this->title = 'Entrada: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Entradas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="item-view">
+<div class="purchase-view">
     <div class="box box-primary">
         <div class="box-body">
             <?= DetailView::widget([

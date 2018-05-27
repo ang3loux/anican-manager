@@ -13,7 +13,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use yii\data\ActiveDataProvider;
 
 /**
  * PurchaseController implements the CRUD actions for Purchase model.
