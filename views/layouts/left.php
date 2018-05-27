@@ -26,6 +26,15 @@
                             ['label' => 'Registrar entrada', 'icon' => 'plus', 'url' => ['/purchase/create'],],
                         ],
                     ],
+                    [
+                        'label' => 'Salidas',
+                        'icon' => 'upload',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Lista de salidas', 'icon' => 'list', 'url' => ['/sale'],],
+                            ['label' => 'Registrar salida', 'icon' => 'plus', 'url' => ['/sale/create'],],
+                        ],
+                    ],
                 ],
             ]
         ) ?>
