@@ -67,7 +67,7 @@ class ItemController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->stock = $model->quantity;
-            if ($model->save(false)) {
+            if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', 'Item creado <b>exitosamente</b>.');
                 return $this->redirect(['index']);
             }

@@ -40,7 +40,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'required'],
+            [['code', 'name', 'unit', 'quantity', 'stock', 'price'], 'required'],
             [['quantity', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['price'], 'number'],
             [['code', 'name', 'unit'], 'string', 'max' => 255],
