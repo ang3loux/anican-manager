@@ -31,7 +31,7 @@ use yii\helpers\Html;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 7em; color: white;"></i>
+                            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
 
                             <p>
                                 <?= Yii::$app->user->identity->username ?>

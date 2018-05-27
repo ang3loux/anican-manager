@@ -113,3 +113,21 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.small-box h3 {
+    font-size: 24px !important;
+}
+
+.small-box .icon {
+    top: 10px !important;
+    font-size: 55px !important;
+}
+
+.small-box:hover .icon {
+    font-size: 65px !important;
+}
+
+.user-header > i {
+    color:#fff !important;
+    font-size:100px !important;
+}
