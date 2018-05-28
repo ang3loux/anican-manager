@@ -136,11 +136,11 @@ class SiteController extends Controller
             if ($user->validatePassword($model->oldPassword)) {
                 $user->setPassword($model->newPassword);
                 if ($user->save()) {
-                    Yii::$app->session->setFlash('success', 'Contraseña modificada exitosamente.');
+                    Yii::$app->session->setFlash('success', 'Contraseña modificada <b>exitosamente</b>.');
                     return $this->goHome();
                 }
             }
-            Yii::$app->session->setFlash('error', 'Error al modificar la contraseña.');
+            Yii::$app->getSession()->setFlash('error', 'Error al modificar la contraseña.');
         }
 
         return $this->render('password', ['model' => $model]);

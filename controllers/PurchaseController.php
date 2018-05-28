@@ -82,7 +82,7 @@ class PurchaseController extends Controller
             Model::loadMultiple($modelDetails, Yii::$app->request->post());
 
             // validate all models
-            $valid = $model->validate() & Model::validateMultiple($modelDetails);
+            $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
             if ($valid) {
                 $transaction = \Yii::$app->db->beginTransaction();
@@ -146,7 +146,7 @@ class PurchaseController extends Controller
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelDetails, 'id', 'id')));
 
             // validate all models
-            $valid = $model->validate() & Model::validateMultiple($modelDetails);
+            $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
             if ($valid) {
                 $transaction = \Yii::$app->db->beginTransaction();
@@ -227,7 +227,7 @@ class PurchaseController extends Controller
             if ($flag) {
                 if ($model->delete()) {
                     $transaction->commit();
-                    Yii::$app->getSession()->setFlash('danger', 'Entrada <b>eliminada</b>.');
+                    Yii::$app->getSession()->setFlash('success', 'Entrada eliminada <b>exitosamente</b>.');
                 } else {
                     $transaction->rollBack();
                 }

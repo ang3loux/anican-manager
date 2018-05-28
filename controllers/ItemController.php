@@ -111,7 +111,7 @@ class ItemController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->getSession()->setFlash('danger', 'Item <b>eliminado</b>.');
+        Yii::$app->getSession()->setFlash('success', 'Item eliminado <b>exitosamente</b>.');
         return $this->redirect(['index']);
     }
 
