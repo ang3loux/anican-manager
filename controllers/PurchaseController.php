@@ -85,31 +85,45 @@ class PurchaseController extends Controller
             $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
             if ($valid) {
-                $transaction = \Yii::$app->db->beginTransaction();
-
-                try {
-                    if ($flag = $model->save()) {
-                        foreach ($modelDetails as $modelDetail) {
-                            $modelDetail->purchase_id = $model->id;
-                            if ($flag = $modelDetail->save()) {
-                                $item = Item::findOne($modelDetail->item_id);
-                                $item->stock += $modelDetail->quantity;
-                                $flag = $item->save();
-                            }
-                            if (!$flag) {
-                                $transaction->rollBack();
-                                break;
-                            }
+                foreach ($modelDetails as $index => $modelDetail) {                    
+                    foreach ($modelDetails as $_index => $_modelDetail) {
+                        if ($modelDetail->item_id == $_modelDetail->item_id &&
+                            $index != $_index
+                        ) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'El item "' . $modelDetail->item->name . '" <b>se encuentra repetido</b>.');
+                            break 2;
                         }
                     }
-
-                    if ($flag) {
-                        $transaction->commit();
-                        Yii::$app->getSession()->setFlash('success', 'Entrada registrada <b>exitosamente</b>.');
-                        return $this->redirect(['index']);
+                }
+                
+                if ($valid) {
+                    $transaction = \Yii::$app->db->beginTransaction();
+                    
+                    try {
+                        if ($flag = $model->save()) {
+                            foreach ($modelDetails as $modelDetail) {
+                                $modelDetail->purchase_id = $model->id;
+                                if ($flag = $modelDetail->save()) {
+                                    $item = Item::findOne($modelDetail->item_id);
+                                    $item->stock += $modelDetail->quantity;
+                                    $flag = $item->save();
+                                }
+                                if (!$flag) {
+                                    $transaction->rollBack();
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if ($flag) {
+                            $transaction->commit();
+                            Yii::$app->getSession()->setFlash('success', 'Entrada registrada <b>exitosamente</b>.');
+                            return $this->redirect(['index']);
+                        }
+                    } catch (Exception $e) {
+                        $transaction->rollBack();
                     }
-                } catch (Exception $e) {
-                    $transaction->rollBack();
                 }
             }
         }
@@ -134,13 +148,15 @@ class PurchaseController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $oldModelDetails = array();
-            foreach ($modelDetails as $modelDetail) {
-                $oldModelDetails[$modelDetail->id] = [
+            foreach ($modelDetails as $index => $modelDetail) {
+                $oldModelDetails[$index] = [
+                    'id' => $modelDetail->id,
                     'item_id' => $modelDetail->item_id,
                     'quantity' => $modelDetail->quantity
                 ];
             }
             $oldIDs = ArrayHelper::map($modelDetails, 'id', 'id');
+
             $modelDetails = Model::createMultiple(PurchaseDetail::classname(), $modelDetails);
             Model::loadMultiple($modelDetails, Yii::$app->request->post());
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelDetails, 'id', 'id')));
@@ -149,50 +165,81 @@ class PurchaseController extends Controller
             $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
             if ($valid) {
-                $transaction = \Yii::$app->db->beginTransaction();
-                try {
-                    if ($flag = $model->save()) {
-                        if (!empty($deletedIDs)) {
-                            $flag = PurchaseDetail::deleteAll(['id' => $deletedIDs]) > 0;
-                            if ($flag) {
-                                foreach ($deletedIDs as $id) {
-                                    $item = Item::findOne($oldModelDetails[$id]['item_id']);
-                                    $item->stock -= $oldModelDetails[$id]['quantity'];
-                                    if (!($flag = $item->save())) {
-                                        $transaction->rollBack();
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $transaction->rollBack();
+                foreach ($modelDetails as $index => $modelDetail) {
+                    foreach ($modelDetails as $_index => $_modelDetail) {
+                        if ($modelDetail->item_id == $_modelDetail->item_id &&
+                            $index != $_index
+                        ) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'El item "' . $modelDetail->item->name . '" <b>se encuentra repetido</b>.');
+                            break 2;
+                        }
+                    }
+                }
+
+                $modelItems = array();
+                if ($valid) {
+                    foreach ($oldModelDetails as $oldModelDetail) {
+                        $item = Item::findOne($oldModelDetail['item_id']);
+                        $item->stock -= $oldModelDetail['quantity'];
+                        array_push($modelItems, $item);
+                    }
+                    foreach ($modelDetails as $modelDetail) {
+                        $item = null;
+                        foreach ($modelItems as $modelItem) {
+                            if ($modelItem->id == $modelDetail->item_id) {
+                                $item = $modelItem;
+                                $item->stock += $modelDetail->quantity;
+                                break;
                             }
                         }
-                        if ($flag) {
+                        if (empty($item)) {
+                            $item = Item::findOne($modelDetail->item_id);
+                            $item->stock += $modelDetail->quantity;
+                            array_push($modelItems, $item);
+                        }
+                    }
+                    foreach ($modelItems as $modelItem) {
+                        if ($modelItem->stock < 0) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'Stock del item "' . $modelItem->name . '" <b>no puede ser negativo</b>.');
+                            break;
+                        }
+                    }
+                }
+
+                if ($valid) {
+                    $transaction = \Yii::$app->db->beginTransaction();
+                    try {
+                        if ($flag = $model->save()) {
+                            PurchaseDetail::deleteAll(['id' => $deletedIDs]);
                             foreach ($modelDetails as $modelDetail) {
-                                $quantity = $modelDetail->quantity;
-                                if (!empty($modelDetail->id) && $modelDetail->item_id == $oldModelDetails[$modelDetail->id]['item_id']) {
-                                    $quantity -= $oldModelDetails[$modelDetail->id]['quantity'];
-                                }
                                 $modelDetail->purchase_id = $model->id;
-                                if (($flag = $modelDetail->save()) && $quantity !== 0) {
-                                    $item = Item::findOne($modelDetail->item_id);
-                                    $item->stock += $quantity;
-                                    $flag = $item->save();
-                                }
+                                $flag = $modelDetail->save();
                                 if (!$flag) {
                                     $transaction->rollBack();
                                     break;
                                 }
                             }
+                            
+                            if ($flag) {
+                                foreach ($modelItems as $modelItem) {
+                                    $flag = $modelItem->save();
+                                    if (!$flag) {
+                                        $transaction->rollBack();
+                                        break;
+                                    }
+                                }
+                            }
                         }
+                        if ($flag) {
+                            $transaction->commit();
+                            Yii::$app->getSession()->setFlash('success', 'Entrada actualizada <b>exitosamente</b>.');
+                            return $this->redirect(['index']);
+                        }
+                    } catch (Exception $e) {
+                        $transaction->rollBack();
                     }
-                    if ($flag) {
-                        $transaction->commit();
-                        Yii::$app->getSession()->setFlash('success', 'Entrada actualizada <b>exitosamente</b>.');
-                        return $this->redirect(['index']);
-                    }
-                } catch (Exception $e) {
-                    $transaction->rollBack();
                 }
             }
         }
@@ -214,29 +261,44 @@ class PurchaseController extends Controller
     {
         $model = $this->findModel($id);
         $modelDetails = $model->getPurchaseDetails()->all();
-        $transaction = \Yii::$app->db->beginTransaction();
-        try {
-            foreach ($modelDetails as $modelDetail) {
-                $item = Item::findOne($modelDetail->item_id);
-                $item->stock -= $modelDetail->quantity;
-                if (!($flag = $item->save())) {
-                    $transaction->rollBack();
-                    break;
-                }
+        $modelItems = array();
+        $valid = true;
+
+        foreach ($modelDetails as $modelDetail) {
+            $item = Item::findOne($modelDetail->item_id);
+            $item->stock -= $modelDetail->quantity;
+            if ($item->stock < 0) {
+                $valid = false;
+                Yii::$app->getSession()->setFlash('error', 'Stock del item "' . $item->name . '" <b>no puede ser negativo</b>.');
+                break;
             }
-            if ($flag) {
-                if ($model->delete()) {
-                    $transaction->commit();
-                    Yii::$app->getSession()->setFlash('success', 'Entrada eliminada <b>exitosamente</b>.');
-                } else {
-                    $transaction->rollBack();
-                }
-            }
-        } catch (Exception $e) {
-            $transaction->rollBack();
+            array_push($modelItems, $item);
         }
 
-        return $this->redirect(['index']);
+        if ($valid) {
+            $transaction = \Yii::$app->db->beginTransaction();
+            try {
+                foreach ($modelItems as $modelDetail) {
+                    if (!($flag = $modelDetail->save())) {
+                        $transaction->rollBack();
+                        break;
+                    }
+                }
+                if ($flag) {
+                    if ($model->delete()) {
+                        $transaction->commit();
+                        Yii::$app->getSession()->setFlash('success', 'Entrada eliminada <b>exitosamente</b>.');
+                        return $this->redirect(['index']);
+                    } else {
+                        $transaction->rollBack();
+                    }
+                }
+            } catch (Exception $e) {
+                $transaction->rollBack();
+            }
+        }
+
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
