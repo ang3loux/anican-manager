@@ -82,34 +82,64 @@ class SaleController extends Controller
             Model::loadMultiple($modelDetails, Yii::$app->request->post());
 
             // validate all models
-            $valid = $model->validate() & Model::validateMultiple($modelDetails);
+            $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
             if ($valid) {
-                $transaction = \Yii::$app->db->beginTransaction();
-
-                try {
-                    if ($flag = $model->save()) {
-                        foreach ($modelDetails as $modelDetail) {
-                            $modelDetail->sale_id = $model->id;
-                            if ($flag = $modelDetail->save()) {
-                                $item = Item::findOne($modelDetail->item_id);
-                                $item->stock -= $modelDetail->quantity;
-                                $flag = $item->save();
-                            }
-                            if (!$flag) {
-                                $transaction->rollBack();
-                                break;
-                            }
+                $modelItems = array();
+                foreach ($modelDetails as $index => $modelDetail) {                    
+                    foreach ($modelDetails as $_index => $_modelDetail) {
+                        if ($modelDetail->item_id == $_modelDetail->item_id &&
+                            $index != $_index
+                        ) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'El item "' . $modelDetail->item->name . '" <b>se encuentra repetido</b>.');
+                            break 2;
                         }
                     }
-
-                    if ($flag) {
-                        $transaction->commit();
-                        Yii::$app->getSession()->setFlash('success', 'Salida registrada <b>exitosamente</b>.');
-                        return $this->redirect(['index']);
+                    if ($valid) {
+                        $item = Item::findOne($modelDetail->item_id);
+                        $item->stock -= $modelDetail->quantity;
+                        if ($item->stock < 0) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'Stock del item "' . $item->name . '" <b>no puede ser negativo</b>.');
+                            break;
+                        }
+                        array_push($modelItems, $item);
                     }
-                } catch (Exception $e) {
-                    $transaction->rollBack();
+                }
+
+                if ($valid) {
+                    $transaction = \Yii::$app->db->beginTransaction();
+                    try {
+                        if ($flag = $model->save()) {
+                            foreach ($modelDetails as $modelDetail) {
+                                $modelDetail->sale_id = $model->id;
+                                $flag = $modelDetail->save();
+                                if (!$flag) {
+                                    $transaction->rollBack();
+                                    break;
+                                }
+                            }
+                        }
+
+                        if ($flag) {
+                            foreach ($modelItems as $modelItem) {
+                                $flag = $modelItem->save();
+                                if (!$flag) {
+                                    $transaction->rollBack();
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if ($flag) {
+                            $transaction->commit();
+                            Yii::$app->getSession()->setFlash('success', 'Salida registrada <b>exitosamente</b>.');
+                            return $this->redirect(['index']);
+                        }
+                    } catch (Exception $e) {
+                        $transaction->rollBack();
+                    }
                 }
             }
         }
@@ -134,64 +164,96 @@ class SaleController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $oldModelDetails = array();
-            foreach ($modelDetails as $modelDetail) {
-                $oldModelDetails[$modelDetail->id] = [
+            foreach ($modelDetails as $index => $modelDetail) {
+                $oldModelDetails[$index] = [
+                    'id' => $modelDetail->id,
                     'item_id' => $modelDetail->item_id,
                     'quantity' => $modelDetail->quantity
                 ];
             }
             $oldIDs = ArrayHelper::map($modelDetails, 'id', 'id');
+
             $modelDetails = Model::createMultiple(SaleDetail::classname(), $modelDetails);
             Model::loadMultiple($modelDetails, Yii::$app->request->post());
             $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelDetails, 'id', 'id')));
 
             // validate all models
-            $valid = $model->validate() & Model::validateMultiple($modelDetails);
+            $valid = $model->validate() && Model::validateMultiple($modelDetails);
 
-            if ($valid) {
-                $transaction = \Yii::$app->db->beginTransaction();
-                try {
-                    if ($flag = $model->save()) {
-                        if (!empty($deletedIDs)) {
-                            if ($flag = SaleDetail::deleteAll(['id' => $deletedIDs]) > 0) {
-                                foreach ($deletedIDs as $id) {
-                                    $item = Item::findOne($oldModelDetails[$id]['item_id']);
-                                    $item->stock += $oldModelDetails[$id]['quantity'];
-                                    if (!($flag = $item->save())) {
-                                        $transaction->rollBack();
-                                        break;
-                                    }
-                                }
-                            } else {
-                                $transaction->rollBack();
+            if ($valid) {                
+                foreach ($modelDetails as $index => $modelDetail) {
+                    foreach ($modelDetails as $_index => $_modelDetail) {
+                        if ($modelDetail->item_id == $_modelDetail->item_id &&
+                            $index != $_index
+                        ) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'El item "' . $modelDetail->item->name . '" <b>se encuentra repetido</b>.');
+                            break 2;
+                        }
+                    }
+                }
+
+                $modelItems = array();
+                if ($valid) {
+                    foreach ($oldModelDetails as $oldModelDetail) {
+                        $item = Item::findOne($oldModelDetail['item_id']);
+                        $item->stock += $oldModelDetail['quantity'];                        
+                        array_push($modelItems, $item);
+                    }
+                    foreach ($modelDetails as $modelDetail) {
+                        $item = null;
+                        foreach ($modelItems as $modelItem) {
+                            if ($modelItem->id == $modelDetail->item_id) {
+                                $item = $modelItem;
+                                $item->stock -= $modelDetail->quantity;
+                                break;
                             }
                         }
-                        if ($flag) {
+                        if (empty($item)) {
+                            $item = Item::findOne($modelDetail->item_id);
+                            $item->stock -= $modelDetail->quantity;
+                            array_push($modelItems, $item);
+                        }                        
+                        if ($item->stock < 0) {
+                            $valid = false;
+                            Yii::$app->getSession()->setFlash('error', 'Stock del item "' . $item->name . '" <b>no puede ser negativo</b>.');
+                            break;
+                        }
+                    }
+                }
+
+                if ($valid) {
+                    $transaction = \Yii::$app->db->beginTransaction();
+                    try {
+                        if ($flag = $model->save()) {
+                            SaleDetail::deleteAll(['id' => $deletedIDs]);
                             foreach ($modelDetails as $modelDetail) {
-                                $quantity = $modelDetail->quantity;
-                                if (!empty($modelDetail->id) && $modelDetail->item_id == $oldModelDetails[$modelDetail->id]['item_id']) {
-                                    $quantity -= $oldModelDetails[$modelDetail->id]['quantity'];
-                                }
                                 $modelDetail->sale_id = $model->id;
-                                if (($flag = $modelDetail->save()) && $quantity !== 0) {
-                                    $item = Item::findOne($modelDetail->item_id);
-                                    $item->stock -= $quantity;
-                                    $flag = $item->save();
-                                }
+                                $flag = $modelDetail->save();
                                 if (!$flag) {
                                     $transaction->rollBack();
                                     break;
                                 }
                             }
+                            
+                            if ($flag) {
+                                foreach ($modelItems as $modelItem) {
+                                    $flag = $modelItem->save();
+                                    if (!$flag) {
+                                        $transaction->rollBack();
+                                        break;
+                                    }
+                                }
+                            }
                         }
+                        if ($flag) {
+                            $transaction->commit();
+                            Yii::$app->getSession()->setFlash('success', 'Salida actualizada <b>exitosamente</b>.');
+                            return $this->redirect(['index']);
+                        }
+                    } catch (Exception $e) {
+                        $transaction->rollBack();
                     }
-                    if ($flag) {
-                        $transaction->commit();
-                        Yii::$app->getSession()->setFlash('success', 'Salida actualizada <b>exitosamente</b>.');
-                        return $this->redirect(['index']);
-                    }
-                } catch (Exception $e) {
-                    $transaction->rollBack();
                 }
             }
         }
@@ -217,7 +279,7 @@ class SaleController extends Controller
         try {
             foreach ($modelDetails as $modelDetail) {
                 $item = Item::findOne($modelDetail->item_id);
-                $item->stock -= $modelDetail->quantity;
+                $item->stock += $modelDetail->quantity;
                 if (!($flag = $item->save())) {
                     $transaction->rollBack();
                     break;
@@ -226,7 +288,7 @@ class SaleController extends Controller
             if ($flag) {
                 if ($model->delete()) {
                     $transaction->commit();
-                    Yii::$app->getSession()->setFlash('danger', 'Salida <b>eliminada</b>.');
+                    Yii::$app->getSession()->setFlash('success', 'Salida eliminada <b>exitosamente</b>.');
                 } else {
                     $transaction->rollBack();
                 }
