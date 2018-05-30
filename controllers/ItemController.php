@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Item;
 use app\models\ItemSearch;
+use app\models\Purchase;
+use app\models\Sale;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -110,7 +112,33 @@ class ItemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $modelPurchases = Purchase::find()
+            ->join('INNER JOIN', 'purchase_detail', 'purchase.id = purchase_detail.purchase_id')
+            ->where('purchase.id IN (SELECT purchase_detail.purchase_id
+                                     FROM purchase_detail
+                                     WHERE purchase_detail.item_id = ' . $id . ')'
+            )
+            ->groupBy('purchase.id')
+            ->having(['COUNT(*)' => 1])
+            ->all();
+        $modelSales = Sale::find()
+            ->join('INNER JOIN', 'sale_detail', 'sale.id = sale_detail.sale_id')
+            ->where('sale.id IN (SELECT sale_detail.sale_id
+                                 FROM sale_detail
+                                 WHERE sale_detail.item_id = ' . $id . ')'
+            )
+            ->groupBy('sale.id')
+            ->having(['COUNT(*)' => 1])
+            ->all();
+
+        foreach ($modelPurchases as $modelPurchase) {
+            $modelPurchase->delete();
+        }
+        foreach ($modelSales as $modelSale) {
+            $modelSale->delete();
+        }
+        $model->delete();
         Yii::$app->getSession()->setFlash('success', 'Item eliminado <b>exitosamente</b>.');
         return $this->redirect(['index']);
     }
