@@ -15,20 +15,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="sale-view">
     <div class="box box-primary">
         <div class="box-body">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'code',
-                    'customer',
-                    'date',
-                    'total',
-                    // 'created_at',
-                    // 'created_by',
-                    // 'updated_at',
-                    // 'updated_by',
-                ],
-            ]) ?>
+            <div class="row center-col">
+                <div class="col-md-8">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'id',
+                            'code',
+                            'customer',
+                            'date',
+                            'total',
+                            // 'created_at',
+                            // 'created_by',
+                            // 'updated_at',
+                            // 'updated_by',
+                        ],
+                    ]) ?>                
+                </div>
+            </div>
 
             <hr>
             <h2><i class="fa fa-shopping-basket" aria-hidden="true"></i> Items eliminados:</h2>

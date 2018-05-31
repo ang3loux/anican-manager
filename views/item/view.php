@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -16,22 +17,26 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="item-view">
     <div class="box box-primary">
         <div class="box-body">
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'code',
-                    'name',
-                    'unit',
-                    'quantity',
-                    'stock',
-                    'price',
-                    // 'created_at',
-                    // 'created_by',
-                    // 'updated_at',
-                    // 'updated_by',
-                ],
-            ]) ?>
+            <div class="row center-col">
+                <div class="col-md-8">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'id',
+                            'code',
+                            'name',
+                            'unit',
+                            'quantity',
+                            'stock',
+                            'price',
+                            // 'created_at',
+                            // 'created_by',
+                            // 'updated_at',
+                            // 'updated_by',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
 
             <hr>
 
@@ -57,8 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'options' => ['class' => 'datepicker-input']
                                 ]),
                                 'format' => 'html',
-                                // 'filter' => DatePicker::widget(['language' => 'es', 'dateFormat' => 'dd-MM-yyyy']),
-                                // 'format' => 'date',
                             ],
                             //'item_id',
                             'quantity',
@@ -67,6 +70,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'created_by',
                             //'updated_at',
                             //'updated_by',
+                            [
+                                'class'    => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons'  => [
+                                    'view'   => function ($url, $modelPurchaseDetail) {
+                                        $url = Url::to(['purchase/view', 'id' => $modelPurchaseDetail->purchase->id]);
+                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                            'title' => 'view',
+                                            'data-pjax' => '0',
+                                        ]);
+                                    },
+                                ]
+                            ]
                         ],
                     ]); ?>
                 </div>
@@ -90,8 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'options' => ['class' => 'datepicker-input']
                                 ]),
                                 'format' => 'html',
-                                // 'filter' => DatePicker::widget(['language' => 'es', 'dateFormat' => 'dd-MM-yyyy']),
-                                // 'format' => 'date',
                             ],
                             //'item_id',
                             'quantity',
@@ -100,6 +114,19 @@ $this->params['breadcrumbs'][] = $this->title;
                             //'created_by',
                             //'updated_at',
                             //'updated_by',
+                            [
+                                'class'    => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons'  => [
+                                    'view'   => function ($url, $modelSaleDetail) {
+                                        $url = Url::to(['sale/view', 'id' => $modelSaleDetail->sale->id]);
+                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                            'title' => 'view',
+                                            'data-pjax' => '0',
+                                        ]);
+                                    },
+                                ]
+                            ]
                         ],
                     ]); ?>
                 </div>
