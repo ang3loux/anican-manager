@@ -66,7 +66,7 @@ class PurchaseDetailSearch extends PurchaseDetail
             'id' => $this->id,
             'purchase_id' => $purchaseID,
             // 'item_id' => $this->item_id,
-            'quantity' => $this->quantity,
+            'purchase_detail.quantity' => $this->quantity,
             'price' => $this->price,
         ]);
 

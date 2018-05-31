@@ -66,7 +66,7 @@ class SaleDetailSearch extends SaleDetail
             'id' => $this->id,
             'sale_id' => $this->sale_id,
             // 'item_id' => $this->item_id,
-            'quantity' => $this->quantity,
+            'sale_detail.quantity' => $this->quantity,
             'price' => $this->price,
         ]);
 
