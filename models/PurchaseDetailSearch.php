@@ -12,20 +12,15 @@ use app\models\PurchaseDetail;
  */
 class PurchaseDetailSearch extends PurchaseDetail
 {
-    public function __construct($id)
-    {
-        $this->purchase_id = $id;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'purchase_id', 'quantity'], 'integer'],
+            [['id'], 'integer'],
+            [['purchase_id', 'item_id', 'quantity'], 'safe'],
             [['price'], 'number'],
-            [['item_id'], 'safe']
         ];
     }
 
@@ -45,7 +40,7 @@ class PurchaseDetailSearch extends PurchaseDetail
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $purchaseID)
     {
         $query = PurchaseDetail::find();
 
@@ -69,13 +64,55 @@ class PurchaseDetailSearch extends PurchaseDetail
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'purchase_id' => $this->purchase_id,
+            'purchase_id' => $purchaseID,
             // 'item_id' => $this->item_id,
             'quantity' => $this->quantity,
             'price' => $this->price,
         ]);
 
         $query->andFilterWhere(['like', 'item.name', $this->item_id]);
+
+        return $dataProvider;
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function searchByItem($params, $itemID)
+    {
+        $query = PurchaseDetail::find();
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => ['pageSize' => 10],
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        $query->joinWith('purchase');
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            // 'purchase_id' => $this->purchase_id,
+            'item_id' => $itemID,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+        ]);
+
+        $query->andFilterWhere(['like', 'purchase.date', $this->purchase_id]);
 
         return $dataProvider;
     }

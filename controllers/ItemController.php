@@ -6,7 +6,9 @@ use Yii;
 use app\models\Item;
 use app\models\ItemSearch;
 use app\models\Purchase;
+use app\models\PurchaseDetailSearch;
 use app\models\Sale;
+use app\models\SaleDetailSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -53,8 +55,22 @@ class ItemController extends Controller
      */
     public function actionView($id)
     {
+        $searchModelPurchase = new PurchaseDetailSearch();
+        $dataProviderPurchase = $searchModelPurchase->searchByItem(Yii::$app->request->queryParams, $id);
+        $dataProviderPurchase->pagination->pageParam = "page-purchase";
+        $dataProviderPurchase->sort->sortParam = "sort-purchase";
+
+        $searchModelSale = new SaleDetailSearch();
+        $dataProviderSale = $searchModelSale->searchByItem(Yii::$app->request->queryParams, $id);
+        $dataProviderSale->pagination->pageParam = "page-sale";
+        $dataProviderSale->sort->sortParam = "sort-sale";
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'searchModelPurchase' => $searchModelPurchase,
+            'dataProviderPurchase' => $dataProviderPurchase,
+            'searchModelSale' => $searchModelSale,
+            'dataProviderSale' => $dataProviderSale,
         ]);
     }
 
