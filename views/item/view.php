@@ -133,6 +133,9 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <?php Pjax::end(); ?>
         </div>
+
+        </br>
+        
         <div class="box-footer text-center">
             <p>
                 <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -55,10 +56,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'created_by',
                     //'updated_at',
                     //'updated_by',
+                    [
+                        'class'    => 'yii\grid\ActionColumn',
+                        'template' => '{view}',
+                        'buttons'  => [
+                            'view'   => function ($url, $modelPurchaseDetail) {
+                                $url = Url::to(['item/view', 'id' => $modelPurchaseDetail->item->id]);
+                                return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                    'title' => 'view',
+                                    'data-pjax' => '0',
+                                ]);
+                            },
+                        ]
+                    ]
                 ],
             ]); ?>
             <?php Pjax::end(); ?>
         </div>
+        
+        </br>
+        
         <div class="box-footer text-center">
             <p>
                 <?= Html::a('Actualizar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
