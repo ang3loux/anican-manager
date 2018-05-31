@@ -114,6 +114,7 @@ a.desc:after {
     outline: none;
 }
 
+/* Home boxes */
 .small-box h3 {
     font-size: 24px !important;
 }
@@ -130,4 +131,11 @@ a.desc:after {
 .user-header > i {
     color:#fff !important;
     font-size:100px !important;
+}
+
+/* Datepicker inputs */
+.datepicker-input {
+    height: 35px;
+    width: 100%;
+    padding-left: 10px;
 }
