@@ -3,11 +3,16 @@ use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 
-$this->title = 'anicanManager';
+$this->title = 'Home';
 ?>
 <div class="site-index">
-    <div class="row">
-        <div class="col-lg-3 col-xs-6">
+    <div class="jumbotron">
+        <div class="container">
+            <h1><b>anican</b>Manager</h1>
+        </div>
+    </div>
+    <div class="row text-center center-col">
+        <div class="col-md-3">
             <a href="<?= Url::toRoute('/item') ?>">
                 <div class="small-box bg-aqua">
                     <div class="inner">
@@ -20,7 +25,7 @@ $this->title = 'anicanManager';
                 </div>
             </a>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-3">
             <a href="<?= Url::toRoute('/purchase') ?>">
                 <div class="small-box bg-green">
                     <div class="inner">
@@ -33,7 +38,7 @@ $this->title = 'anicanManager';
                 </div>
             </a>
         </div>
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-3">
             <a href="<?= Url::toRoute('/sale') ?>">
                 <div class="small-box bg-yellow">
                     <div class="inner">
