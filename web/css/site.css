@@ -139,3 +139,16 @@ a.desc:after {
     width: 100%;
     padding-left: 10px;
 }
+
+/* Dynamic form - horizontal */
+.dynamic-number {
+    width: 5%;
+}
+
+.dynamic-item {
+    width: 60%;
+}
+
+.dynamic-actions {
+    width: 5%;
+}

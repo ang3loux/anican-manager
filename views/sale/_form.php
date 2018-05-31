@@ -60,10 +60,12 @@ $this->registerJs($js);
             ]); ?>
                 <table class="table table-striped table-bordered container-items">
                     <tr>
-                        <th>#</th>
-                        <th>Item</th>
+                        <th class="dynamic-number">#</th>
+                        <th class="dynamic-item">Item</th>
                         <th>Monto</th>
-                        <th><button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Añadir</button></th>
+                        <th class="dynamic-actions">
+                            <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Añadir</button>
+                        </th>
                     </tr>
                     <?php foreach ($modelDetails as $i => $modelDetail): ?>
                         <tr class="item">
