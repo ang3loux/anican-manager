@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Sale */
@@ -32,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <hr>
             <h2><i class="fa fa-shopping-basket" aria-hidden="true"></i> Items eliminados:</h2>
 
+            <?php Pjax::begin(); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
@@ -51,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     //'updated_by',
                 ],
             ]); ?>
+            <?php Pjax::end(); ?>
         </div>
         <div class="box-footer text-center">
             <p>
