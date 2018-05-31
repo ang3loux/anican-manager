@@ -40,7 +40,7 @@ class SaleDetailSearch extends SaleDetail
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $saleID)
     {
         $query = SaleDetail::find();
 
@@ -64,7 +64,7 @@ class SaleDetailSearch extends SaleDetail
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'sale_id' => $this->sale_id,
+            'sale_id' => $saleID,
             // 'item_id' => $this->item_id,
             'sale_detail.quantity' => $this->quantity,
             'price' => $this->price,
