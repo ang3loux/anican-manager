@@ -57,8 +57,8 @@ class SaleController extends Controller
      */
     public function actionView($id)
     {
-        $searchModel = new SaleDetailSearch($id);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new SaleDetailSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
