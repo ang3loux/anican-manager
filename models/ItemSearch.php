@@ -18,9 +18,8 @@ class ItemSearch extends Item
     public function rules()
     {
         return [
-            [['id', 'quantity', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['code', 'name', 'unit'], 'safe'],
-            [['price'], 'number'],
+            [['id', 'cooled', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['code', 'name', 'description', 'unit'], 'safe'],
         ];
     }
 
@@ -61,9 +60,8 @@ class ItemSearch extends Item
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'quantity' => $this->quantity,
+            'cooled' => $this->cooled,
             'stock' => $this->stock,
-            'price' => $this->price,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -72,6 +70,7 @@ class ItemSearch extends Item
 
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'unit', $this->unit]);
 
         return $dataProvider;

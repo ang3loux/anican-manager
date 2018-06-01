@@ -24,13 +24,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
+    <?= $form->field($model, 'description') ?>
+
+    <?= $form->field($model, 'cooled') ?>
+
     <?= $form->field($model, 'unit') ?>
 
-    <?= $form->field($model, 'quantity') ?>
-
     <?php // echo $form->field($model, 'stock') ?>
-
-    <?php // echo $form->field($model, 'price') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

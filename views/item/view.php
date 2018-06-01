@@ -25,14 +25,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id',
                             'code',
                             'name',
+                            'description',
+                            [
+                                'attribute' => 'cooled',
+                                'value' => $model->cooled == 0 ? 'No' : 'Si',
+                            ],
                             'unit',
-                            'quantity',
                             'stock',
-                            'price',
-                            // 'created_at',
-                            // 'created_by',
-                            // 'updated_at',
-                            // 'updated_by',
+                            //'created_at',
+                            //'created_by',
+                            //'updated_at',
+                            //'updated_by',
                         ],
                     ]) ?>
                 </div>

@@ -14,10 +14,10 @@ use yii\behaviors\BlameableBehavior;
  * @property int $id
  * @property string $code
  * @property string $name
+ * @property string $description
+ * @property int $cooled
  * @property string $unit
- * @property int $quantity
  * @property int $stock
- * @property string $price
  * @property string $image
  * @property int $created_at
  * @property int $created_by
@@ -48,9 +48,9 @@ class Item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name', 'unit', 'quantity', 'stock', 'price'], 'required'],
-            [['quantity', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['price'], 'number'],
+            [['code', 'name', 'cooled', 'unit', 'stock'], 'required'],
+            [['cooled', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['description'], 'string'],
             [['code', 'name', 'unit','image'], 'string', 'max' => 255],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
@@ -73,10 +73,10 @@ class Item extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Código',
             'name' => 'Nombre',
-            'unit' => 'Unidad  de medida',
-            'quantity' => 'Stock inicial',
+            'description' => 'Descripción',
+            'cooled' => '¿Refrigerado?',
+            'unit' => 'Unidad de medida',
             'stock' => 'Stock',
-            'price' => 'Precio',
             'image' => 'Imagen',
             'imageFile' => 'Imagen',
             'created_at' => 'Created At',

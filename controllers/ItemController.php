@@ -85,7 +85,7 @@ class ItemController extends Controller
         $model = new Item();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->stock = $model->quantity;
+            $model->stock = 0;
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->uploadImage()) {
                 if ($model->save(false)) {
@@ -109,10 +109,8 @@ class ItemController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $oldQuantity = $model->quantity;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->stock += $model->quantity - $oldQuantity;
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             $valid = true;
             if (!empty($model->imageFile)) {
