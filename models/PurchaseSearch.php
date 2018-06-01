@@ -18,9 +18,8 @@ class PurchaseSearch extends Purchase
     public function rules()
     {
         return [
-            [['id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['id', 'reason', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['code', 'supplier', 'date'], 'safe'],
-            [['total'], 'number'],
         ];
     }
 
@@ -49,7 +48,7 @@ class PurchaseSearch extends Purchase
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 10],
-            'sort' => ['defaultOrder' => ['updated_at'=>SORT_DESC]],
+            'sort' => ['defaultOrder' => ['updated_at' => SORT_DESC]],
         ]);
 
         $this->load($params);
@@ -63,8 +62,8 @@ class PurchaseSearch extends Purchase
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'reason' => $this->reason,
             'date' => $this->date,
-            'total' => $this->total,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,

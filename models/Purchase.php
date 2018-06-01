@@ -11,9 +11,9 @@ use yii\behaviors\BlameableBehavior;
  *
  * @property int $id
  * @property string $code
+ * @property int $reason
  * @property string $supplier
  * @property string $date
- * @property string $total
  * @property int $created_at
  * @property int $created_by
  * @property int $updated_at
@@ -37,10 +37,9 @@ class Purchase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'supplier', 'date'], 'required'],
+            [['code', 'reason', 'supplier', 'date'], 'required'],
             [['date'], 'safe'],
-            [['total'], 'number'],
-            [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['reason', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['code', 'supplier'], 'string', 'max' => 255],
         ];
     }
@@ -61,9 +60,9 @@ class Purchase extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'code' => 'Código',
+            'reason' => 'Razón',
             'supplier' => 'Proveedor',
             'date' => 'Fecha',
-            'total' => 'Total',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

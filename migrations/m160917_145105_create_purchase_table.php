@@ -20,9 +20,9 @@ class m160917_145105_create_purchase_table extends Migration
         $this->createTable('purchase', [
             'id' => $this->primaryKey(),
             'code' => $this->string()->defaultValue('')->notNull(),
+            'reason' => $this->integer(1)->defaultValue(0)->notNull(),
             'supplier' => $this->string()->defaultValue('')->notNull(),
             'date' => $this->date()->notNull(),
-            'total' => $this->money()->defaultValue(0)->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
