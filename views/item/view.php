@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box box-primary">
         <div class="box-body">
             <div class="row center-col">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <?= DetailView::widget([
                         'model' => $model,
                         'attributes' => [
@@ -35,6 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'updated_by',
                         ],
                     ]) ?>
+                </div>
+                <div class="col-md-4 center-col">
+                    <a href= <?= $model->image ?> target="_blank">
+	                	<img src=<?=$model->image?> style="height: 260px;">
+	            	</a>
                 </div>
             </div>
 

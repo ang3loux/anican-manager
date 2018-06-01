@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 
@@ -16,6 +18,7 @@ use yii\behaviors\BlameableBehavior;
  * @property int $quantity
  * @property int $stock
  * @property string $price
+ * @property string $image
  * @property int $created_at
  * @property int $created_by
  * @property int $updated_at
@@ -26,6 +29,11 @@ use yii\behaviors\BlameableBehavior;
  */
 class Item extends \yii\db\ActiveRecord
 {
+    /**
+     * @var UploadedFile
+     */
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +51,8 @@ class Item extends \yii\db\ActiveRecord
             [['code', 'name', 'unit', 'quantity', 'stock', 'price'], 'required'],
             [['quantity', 'stock', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['price'], 'number'],
-            [['code', 'name', 'unit'], 'string', 'max' => 255],
+            [['code', 'name', 'unit','image'], 'string', 'max' => 255],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -68,6 +77,8 @@ class Item extends \yii\db\ActiveRecord
             'quantity' => 'Stock inicial',
             'stock' => 'Stock',
             'price' => 'Precio',
+            'image' => 'Imagen',
+            'imageFile' => 'Imagen',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
@@ -89,5 +100,29 @@ class Item extends \yii\db\ActiveRecord
     public function getSaleDetails()
     {
         return $this->hasMany(SaleDetail::className(), ['item_id' => 'id']);
+    }
+
+    public function uploadImage()
+    {
+        if ($this->validate()) {
+            $path = 'uploads/item-images/' . time() . '/';
+            $baseName = str_replace([' ', '.'], '', $this->imageFile->baseName);
+            $extension = $this->imageFile->extension;
+            $imagePath = $path . $baseName . '.' . $extension;
+
+            $this->image = $imagePath;
+            FileHelper::createDirectory($path);
+            $this->imageFile->saveAs($imagePath);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function deleteImage()
+    {
+        $path = substr($this->image, 0, 30);
+
+        FileHelper::removeDirectory($path);
     }
 }

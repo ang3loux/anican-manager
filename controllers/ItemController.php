@@ -10,6 +10,7 @@ use app\models\PurchaseDetailSearch;
 use app\models\Sale;
 use app\models\SaleDetailSearch;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -85,9 +86,12 @@ class ItemController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->stock = $model->quantity;
-            if ($model->save()) {
-                Yii::$app->getSession()->setFlash('success', 'Item creado <b>exitosamente</b>.');
-                return $this->redirect(['index']);
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->uploadImage()) {
+                if ($model->save(false)) {
+                    Yii::$app->getSession()->setFlash('success', 'Item creado <b>exitosamente</b>.');
+                    return $this->redirect(['index']);
+                }
             }
         }
 
@@ -109,9 +113,17 @@ class ItemController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->stock += $model->quantity - $oldQuantity;
-            if ($model->save()) {
-                Yii::$app->getSession()->setFlash('success', 'Item actualizado <b>exitosamente</b>.');
-                return $this->redirect(['index']);
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $valid = true;
+            if (!empty($model->imageFile)) {
+                $model->deleteImage();
+                $valid = $model->uploadImage();
+            }
+            if ($valid) {
+                if ($model->save(false)) {
+                    Yii::$app->getSession()->setFlash('success', 'Item actualizado <b>exitosamente</b>.');
+                    return $this->redirect(['index']);
+                }
             }
         }
 
@@ -154,6 +166,7 @@ class ItemController extends Controller
         foreach ($modelSales as $modelSale) {
             $modelSale->delete();
         }
+        $model->deleteImage();
         $model->delete();
         Yii::$app->getSession()->setFlash('success', 'Item eliminado <b>exitosamente</b>.');
         return $this->redirect(['index']);

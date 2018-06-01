@@ -25,6 +25,7 @@ class m160917_142937_create_item_table extends Migration
             'quantity' => $this->integer()->defaultValue(0)->notNull(),
             'stock' => $this->integer()->defaultValue(0)->notNull(),
             'price' => $this->money()->defaultValue(0)->notNull(),
+            'image' => $this->string()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
