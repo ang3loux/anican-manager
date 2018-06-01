@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return $model->cooled == 0 ? 'No' : 'Si';
                 },
+                'filter' => array('0' => 'No', '1' => 'Si')
             ],
             //'unit',
             'stock',
