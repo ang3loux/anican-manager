@@ -62,7 +62,7 @@ $this->registerJs($js);
                     <tr>
                         <th class="dynamic-number">#</th>
                         <th class="dynamic-item">Item</th>
-                        <th>Monto</th>
+                        <th>Cantidad</th>
                         <th class="dynamic-actions">
                             <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Añadir</button>
                         </th>
