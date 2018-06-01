@@ -22,11 +22,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'code') ?>
 
+    <?= $form->field($model, 'reason') ?>
+
     <?= $form->field($model, 'customer') ?>
 
     <?= $form->field($model, 'date') ?>
-
-    <?= $form->field($model, 'total') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

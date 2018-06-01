@@ -23,9 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attributes' => [
                             'id',
                             'code',
+                            [
+                                'attribute' => 'reason',
+                                'value' => $model->reason == 0 ? 'Donación' : 'Otro',
+                            ],
                             'customer',
                             'date',
-                            'total',
                             // 'created_at',
                             // 'created_by',
                             // 'updated_at',

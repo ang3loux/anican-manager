@@ -20,9 +20,9 @@ class m160917_145838_create_sale_table extends Migration
         $this->createTable('sale', [
             'id' => $this->primaryKey(),
             'code' => $this->string()->defaultValue('')->notNull(),
+            'reason' => $this->integer(1)->defaultValue(0)->notNull(),
             'customer' => $this->string()->defaultValue('')->notNull(),
             'date' => $this->date()->notNull(),
-            'total' => $this->money()->defaultValue(0)->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
