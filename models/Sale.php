@@ -62,7 +62,7 @@ class Sale extends \yii\db\ActiveRecord
             'code' => 'Código',
             'reason' => 'Razón',
             'customer' => 'Cliente',
-            'date' => 'Fecha',
+            'date' => 'Fecha de salida',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
