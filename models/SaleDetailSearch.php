@@ -12,15 +12,16 @@ use app\models\SaleDetail;
  */
 class SaleDetailSearch extends SaleDetail
 {
+    public $reason;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['sale_id', 'item_id', 'quantity'], 'safe'],
-            [['price'], 'number'],
+            [['id', 'quantity', 'reason'], 'integer'],
+            [['sale_id', 'item_id', 'description'], 'safe'],
         ];
     }
 
@@ -66,11 +67,11 @@ class SaleDetailSearch extends SaleDetail
             'id' => $this->id,
             'sale_id' => $saleID,
             // 'item_id' => $this->item_id,
-            'sale_detail.quantity' => $this->quantity,
-            'price' => $this->price,
+            'quantity' => $this->quantity,
         ]);
 
-        $query->andFilterWhere(['like', 'item.name', $this->item_id]);
+        $query->andFilterWhere(['like', 'item.name', $this->item_id])
+            ->andFilterWhere(['like', 'sale_detail.description', $this->description]);
 
         return $dataProvider;
     }
@@ -91,6 +92,7 @@ class SaleDetailSearch extends SaleDetail
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 10],
+            'sort' => ['attributes' => ['sale_id', 'quantity', 'reason']]
         ]);
 
         $this->load($params);
@@ -109,10 +111,11 @@ class SaleDetailSearch extends SaleDetail
             // 'sale_id' => $this->sale_id,
             'item_id' => $itemID,
             'quantity' => $this->quantity,
-            'price' => $this->price,
+            'sale.reason' => $this->reason,
         ]);
 
-        $query->andFilterWhere(['like', 'sale.date', $this->sale_id]);
+        $query->andFilterWhere(['like', 'sale.date', $this->sale_id])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

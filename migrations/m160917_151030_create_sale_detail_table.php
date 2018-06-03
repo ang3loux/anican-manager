@@ -22,7 +22,7 @@ class m160917_151030_create_sale_detail_table extends Migration
             'sale_id' => $this->integer()->notNull(),
             'item_id' => $this->integer()->notNull(),
             'quantity' => $this->integer()->notNull(),
-            'price' => $this->money()->defaultValue(0)->notNull()
+            'description' => $this->text(),
         ], $tableOptions);
 
         $this->createIndex(

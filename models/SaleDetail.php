@@ -11,7 +11,7 @@ use Yii;
  * @property int $sale_id
  * @property int $item_id
  * @property int $quantity
- * @property string $price
+ * @property string $description
  *
  * @property Item $item
  * @property Sale $sale
@@ -34,7 +34,7 @@ class SaleDetail extends \yii\db\ActiveRecord
         return [
             [['item_id', 'quantity'], 'required'],
             [['sale_id', 'item_id', 'quantity'], 'integer'],
-            [['price'], 'number'],
+            [['description'], 'string'],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['sale_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sale::className(), 'targetAttribute' => ['sale_id' => 'id']],
         ];
@@ -50,7 +50,7 @@ class SaleDetail extends \yii\db\ActiveRecord
             'sale_id' => 'Sale ID',
             'item_id' => 'Item ID',
             'quantity' => 'Cantidad',
-            'price' => 'Precio',
+            'description' => 'Descripción',
         ];
     }
 

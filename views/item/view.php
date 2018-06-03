@@ -153,7 +153,26 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             //'item_id',
                             'quantity',
-                            //'price',
+                            [
+                                'label' => 'Razón',
+                                'attribute' => 'reason',
+                                'value' => function ($model) {
+                                    switch ($model->sale->reason) {
+                                        case 0:
+                                            return 'Donación';
+
+                                        case 1:
+                                            return 'Vencimiento';
+                                        
+                                        case 2:
+                                            return 'Otro';
+
+                                        default:
+                                            return 'Error';
+                                    }
+                                },
+                                'filter' => array('0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro')
+                            ],
                             //'created_at',
                             //'created_by',
                             //'updated_at',

@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Sale */
@@ -68,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'item.name'
                     ],
                     'quantity',
-                    // 'price',
+                    'description',
                     //'created_at',
                     //'created_by',
                     //'updated_at',
