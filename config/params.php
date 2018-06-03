@@ -16,5 +16,9 @@ return [
         'VEF' => 'VEF',
         'COP' => 'COP',
         'USD' => 'USD'
+    ],
+    'uploadPath' => [
+        'persons' => 'uploads/person-images/',
+        'items' => 'uploads/item-images/'
     ]
 ];

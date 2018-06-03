@@ -105,7 +105,7 @@ class Item extends \yii\db\ActiveRecord
     public function uploadImage()
     {
         if ($this->validate()) {
-            $path = 'uploads/item-images/' . time() . '/';
+            $path = Yii::$app->params['uploadPath']['items'] . time() . '/';
             $baseName = str_replace([' ', '.'], '', $this->imageFile->baseName);
             $extension = $this->imageFile->extension;
             $imagePath = $path . $baseName . '.' . $extension;
