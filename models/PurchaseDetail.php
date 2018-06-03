@@ -10,8 +10,11 @@ use Yii;
  * @property int $id
  * @property int $purchase_id
  * @property int $item_id
+ * @property string $expiration
  * @property int $quantity
  * @property string $price
+ * @property string $currency
+ * @property string $description
  *
  * @property Item $item
  * @property Purchase $purchase
@@ -32,9 +35,12 @@ class PurchaseDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['item_id', 'quantity'], 'required'],
+            [['item_id', 'quantity', 'price', 'currency'], 'required'],
             [['purchase_id', 'item_id', 'quantity'], 'integer'],
-            [['price'], 'number'],
+            [['expiration'], 'safe'],
+            [['price'], 'number'],            
+            [['currency'], 'string', 'max' => 3],
+            [['description'], 'string'], 
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['purchase_id'], 'exist', 'skipOnError' => true, 'targetClass' => Purchase::className(), 'targetAttribute' => ['purchase_id' => 'id']],
         ];
@@ -47,10 +53,13 @@ class PurchaseDetail extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'purchase_id' => 'Purchase ID',
-            'item_id' => 'Item ID',
+            'purchase_id' => 'Entrada',
+            'item_id' => 'Item',
+            'expiration' => 'Fecha de vencimiento',
             'quantity' => 'Cantidad',
             'price' => 'Precio',
+            'currency' => 'Moneda',
+            'description' => 'Descripción',
         ];
     }
 

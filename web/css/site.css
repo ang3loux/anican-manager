@@ -147,14 +147,22 @@ a.desc:after {
 }
 
 /* Dynamic form - horizontal */
-.dynamic-number {
+.dynamic-5 {
     width: 5%;
 }
 
-.dynamic-item {
-    width: 60%;
+.dynamic-10 {
+    width: 10%;
 }
 
-.dynamic-actions {
-    width: 5%;
+.dynamic-15 {
+    width: 15%;
+}
+
+.dynamic-20 {
+    width: 20%;
+}
+
+.dynamic-25 {
+    width: 25%;
 }

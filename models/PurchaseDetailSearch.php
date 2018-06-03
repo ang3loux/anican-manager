@@ -12,14 +12,16 @@ use app\models\PurchaseDetail;
  */
 class PurchaseDetailSearch extends PurchaseDetail
 {
+    public $reason;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['purchase_id', 'item_id', 'quantity'], 'safe'],
+            [['id', 'quantity', 'reason'], 'integer'],
+            [['purchase_id', 'item_id', 'expiration', 'currency', 'description'], 'safe'],
             [['price'], 'number'],
         ];
     }
@@ -66,11 +68,14 @@ class PurchaseDetailSearch extends PurchaseDetail
             'id' => $this->id,
             'purchase_id' => $purchaseID,
             // 'item_id' => $this->item_id,
-            'purchase_detail.quantity' => $this->quantity,
+            'expiration' => $this->expiration,
+            'quantity' => $this->quantity,
             'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'item.name', $this->item_id]);
+        $query->andFilterWhere(['like', 'item.name', $this->item_id])
+            ->andFilterWhere(['like', 'currency', $this->currency])
+            ->andFilterWhere(['like', 'purchase_detail.description', $this->description]);
 
         return $dataProvider;
     }
@@ -91,6 +96,7 @@ class PurchaseDetailSearch extends PurchaseDetail
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => ['pageSize' => 10],
+            'sort' => ['attributes' => ['purchase_id', 'expiration', 'quantity', 'reason']]
         ]);
 
         $this->load($params);
@@ -108,11 +114,15 @@ class PurchaseDetailSearch extends PurchaseDetail
             'id' => $this->id,
             // 'purchase_id' => $this->purchase_id,
             'item_id' => $itemID,
+            'expiration' => $this->expiration,
             'quantity' => $this->quantity,
             'price' => $this->price,
+            'purchase.reason' => $this->reason,
         ]);
 
-        $query->andFilterWhere(['like', 'purchase.date', $this->purchase_id]);
+        $query->andFilterWhere(['like', 'purchase.date', $this->purchase_id])
+            ->andFilterWhere(['like', 'currency', $this->currency])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

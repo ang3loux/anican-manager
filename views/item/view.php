@@ -72,8 +72,32 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'html',
                             ],
                             //'item_id',
+                            [
+                                'attribute' => 'expiration',
+                                'value' => function ($model) {
+                                    return empty($model->expiration) ? '-' : $model->expiration;
+                                },
+                                'filter' => DatePicker::widget([
+                                    'model' => $searchModelPurchase,
+                                    'attribute' => 'expiration',
+                                    'language' => 'es',
+                                    'dateFormat' => 'yyyy-MM-dd',
+                                    'options' => ['class' => 'datepicker-input']
+                                ]),
+                                'format' => 'html',
+                            ],
                             'quantity',
-                            //'price',
+                            [
+                                'label' => 'Razón',
+                                'attribute' => 'reason',
+                                'value' => function ($model) {
+                                    return $model->purchase->reason == 0 ? 'Compra' : 'Donación';
+                                },
+                                'filter' => array('0' => 'Compra', '1' => 'Donación')
+                            ],
+                            // 'price',
+                            // 'currency',
+                            // 'description',
                             //'created_at',
                             //'created_by',
                             //'updated_at',

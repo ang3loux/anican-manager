@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Purchase */
@@ -53,8 +54,32 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'item_id',
                         'value' => 'item.name'
                     ],
+                    [
+                        'attribute' => 'expiration',
+                        'value' => function ($model) {
+                            return empty($model->expiration) ? '-' : $model->expiration;
+                        },
+                        'filter' => DatePicker::widget([
+                            'model' => $searchModel,
+                            'attribute' => 'expiration',
+                            'language' => 'es',
+                            'dateFormat' => 'yyyy-MM-dd',
+                            'options' => ['class' => 'datepicker-input']
+                        ]),
+                        'format' => 'html',
+                    ],
                     'quantity',
-                    // 'price',
+                    'price',
+                    [
+                        'attribute' => 'currency',
+                        'value' => 'currency',
+                        'filter' => array(
+                            'VEF' => 'VEF',
+                            'COP' => 'COP',
+                            'USD' => 'USD'
+                        )
+                    ],
+                    'description',
                     //'created_at',
                     //'created_by',
                     //'updated_at',

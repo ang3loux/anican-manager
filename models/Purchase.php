@@ -62,7 +62,7 @@ class Purchase extends \yii\db\ActiveRecord
             'code' => 'Código',
             'reason' => 'Razón',
             'supplier' => 'Proveedor',
-            'date' => 'Fecha',
+            'date' => 'Fecha de entrada',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

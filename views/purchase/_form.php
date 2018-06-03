@@ -12,6 +12,16 @@ use kartik\select2\Select2;
 /* @var $model app\models\Purchase */
 /* @var $form yii\widgets\ActiveForm */
 
+$horizontalCssClasses = [
+    'horizontalCssClasses' => [
+        'label' => '',
+        'offset' => '',
+        'wrapper' => 'col-sm-12',
+        'error' => '',
+        'hint' => '',
+    ]
+];
+
 $js = '
 function setIndexNo() {
     $(".dynamicform_wrapper .item td:first-child b").each(function(index) {
@@ -55,35 +65,67 @@ $this->registerJs($js);
                 'formId' => 'dynamic-form',
                 'formFields' => [
                     'item_id',
+                    'expiration',
                     'quantity',
                     'price',
+                    'currency',
+                    'description'
                 ],
             ]); ?>
                 <table class="table table-striped table-bordered container-items">
                     <tr>
-                        <th class="dynamic-number">#</th>
-                        <th class="dynamic-item">Item</th>
-                        <th>Cantidad</th>
-                        <th class="dynamic-actions">
+                        <th class="dynamic-5">#</th>
+                        <th class="dynamic-20">Item</th>
+                        <th class="dynamic-10">Fecha de vencimiento</th>
+                        <th class="dynamic-15">Cantidad</th>
+                        <th class="dynamic-15">Precio</th>
+                        <th class="dynamic-10">Moneda</th>
+                        <th class="dynamic-25">Descripción</th>
+                        <th>
                             <button type="button" class="pull-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Añadir</button>
                         </th>
                     </tr>
                     <?php foreach ($modelDetails as $i => $modelDetail): ?>
                         <tr class="item">
-                            <td>
+                            <td class="text-center">
                                 <b><?= $i + 1 ?></b>
                                 <?php if (!$modelDetail->isNewRecord) {
                                     echo Html::activeHiddenInput($modelDetail, "[{$i}]id");
                                 } ?>
                             </td>
                             <td>
-                                <?= $form->field($modelDetail, "[{$i}]item_id")->widget(Select2::className(), [
+                                <?= $form->field($modelDetail, "[{$i}]item_id", $horizontalCssClasses)->widget(Select2::className(), [
                                     'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
                                     'disabled' => !$modelDetail->isNewRecord
                                 ])->label(false) ?>
                             </td>
-                            <td><?= $form->field($modelDetail, "[{$i}]quantity")->textInput()->label(false) ?></td>
-                            <td><button type="button" class="pull-right remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i> Eliminar</button></td>
+                            <td>
+                                <?= $form->field($modelDetail, "[{$i}]expiration", $horizontalCssClasses)->widget(DatePicker::className(), [
+                                    'options' => ['class' => 'form-control'],
+                                    'dateFormat' => 'yyyy-MM-dd'
+                                ])->label(false) ?>
+                            </td>
+                            <td>
+                                <?= $form->field($modelDetail, "[{$i}]quantity", $horizontalCssClasses)->textInput(['value' => 0])->label(false) ?>
+                            </td>
+                            <td>
+                                <?= $form->field($modelDetail, "[{$i}]price", $horizontalCssClasses)->textInput(['value' => 0])->label(false) ?>
+                            </td>
+                            <td>
+                                <?= $form->field($modelDetail, "[{$i}]currency", $horizontalCssClasses)->dropDownList([
+                                    'VEF' => 'VEF',
+                                    'COP' => 'COP',
+                                    'USD' => 'USD'
+                                ])->label(false) ?>
+                            </td>
+                            <td>
+                                <?= $form->field($modelDetail, "[{$i}]description", $horizontalCssClasses)->textArea(['rows' => '6'])->label(false) ?>
+                            </td>
+                            <td>
+                                <button type="button" class="pull-right remove-item btn btn-danger btn-xs">
+                                    <i class="fa fa-minus"></i> Eliminar
+                                </button>
+                            </td>
                         </div>
                     <?php endforeach; ?>
                 </table>

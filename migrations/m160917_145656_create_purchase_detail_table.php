@@ -21,8 +21,12 @@ class m160917_145656_create_purchase_detail_table extends Migration
             'id' => $this->primaryKey(),
             'purchase_id' => $this->integer()->notNull(),
             'item_id' => $this->integer()->notNull(),
+            'expiration' => $this->date(),
             'quantity' => $this->integer()->notNull(),
-            'price' => $this->money()->defaultValue(0)->notNull()
+            'price' => $this->money()->defaultValue(0)->notNull(),
+            'currency' => $this->string(3)->defaultValue('VEF')->notNull(),
+            'description' => $this->text(),
+
         ], $tableOptions);
 
         $this->createIndex(
