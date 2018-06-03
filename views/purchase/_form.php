@@ -47,7 +47,7 @@ $this->registerJs($js);
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form', 'layout' => 'horizontal']); ?>
         <div class="box-body">
             <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'reason')->radioList(['0' => 'Compra', '1' => 'Donación', '2' => 'Otro']); ?>
+            <?= $form->field($model, 'reason')->radioList(Yii::$app->params['purchaseReasons']); ?>
             <?= $form->field($model, 'supplier')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'date')->widget(DatePicker::className(), [
                 'options' => ['class' => 'form-control'],
@@ -112,11 +112,7 @@ $this->registerJs($js);
                                 <?= $form->field($modelDetail, "[{$i}]price", $horizontalCssClasses)->textInput()->label(false) ?>
                             </td>
                             <td>
-                                <?= $form->field($modelDetail, "[{$i}]currency", $horizontalCssClasses)->dropDownList([
-                                    'VEF' => 'VEF',
-                                    'COP' => 'COP',
-                                    'USD' => 'USD'
-                                ])->label(false) ?>
+                                <?= $form->field($modelDetail, "[{$i}]currency", $horizontalCssClasses)->dropDownList(Yii::$app->params['currencies'])->label(false) ?>
                             </td>
                             <td>
                                 <?= $form->field($modelDetail, "[{$i}]description", $horizontalCssClasses)->textArea(['rows' => '6'])->label(false) ?>

@@ -31,21 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'reason',
                 'value' => function ($model) {
-                    switch ($model->reason) {
-                        case 0:
-                            return 'Donación';
-
-                        case 1:
-                            return 'Vencimiento';
-                        
-                        case 2:
-                            return 'Otro';
-
-                        default:
-                            return 'Error';
-                    }
+                    return Yii::$app->params['saleReasons'][$model->reason];
                 },
-                'filter' => array('0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro')
+                'filter' => Yii::$app->params['saleReasons']
             ],
             'customer',
             [

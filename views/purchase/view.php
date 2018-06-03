@@ -27,19 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'reason',
                                 'value' => function ($model) {
-                                    switch ($model->reason) {
-                                        case 0:
-                                            return 'Compra';
-                
-                                        case 1:
-                                            return 'Donación';
-                                        
-                                        case 2:
-                                            return 'Otro';
-                
-                                        default:
-                                            return 'Error';
-                                    }
+                                    return Yii::$app->params['purchaseReasons'][$model->reason];
                                 },
                             ],
                             'supplier',
@@ -87,11 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'attribute' => 'currency',
                         'value' => 'currency',
-                        'filter' => array(
-                            'VEF' => 'VEF',
-                            'COP' => 'COP',
-                            'USD' => 'USD'
-                        )
+                        'filter' => Yii::$app->params['currencies']
                     ],
                     'description',
                     //'created_at',

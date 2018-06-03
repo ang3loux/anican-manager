@@ -91,21 +91,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label' => 'Razón',
                                 'attribute' => 'reason',
                                 'value' => function ($model) {
-                                    switch ($model->purchase->reason) {
-                                        case 0:
-                                            return 'Compra';
-
-                                        case 1:
-                                            return 'Donación';
-                                        
-                                        case 2:
-                                            return 'Otro';
-
-                                        default:
-                                            return 'Error';
-                                    }
+                                    return Yii::$app->params['purchaseReasons'][$model->purchase->reason];
                                 },
-                                'filter' => array('0' => 'Compra', '1' => 'Donación', '2' => 'Otro')
+                                'filter' => Yii::$app->params['purchaseReasons']
                             ],
                             // 'price',
                             // 'currency',
@@ -157,21 +145,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label' => 'Razón',
                                 'attribute' => 'reason',
                                 'value' => function ($model) {
-                                    switch ($model->sale->reason) {
-                                        case 0:
-                                            return 'Donación';
-
-                                        case 1:
-                                            return 'Vencimiento';
-                                        
-                                        case 2:
-                                            return 'Otro';
-
-                                        default:
-                                            return 'Error';
-                                    }
+                                    return Yii::$app->params['saleReasons'][$model->sale->reason];
                                 },
-                                'filter' => array('0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro')
+                                'filter' => Yii::$app->params['saleReasons']
                             ],
                             //'created_at',
                             //'created_by',
