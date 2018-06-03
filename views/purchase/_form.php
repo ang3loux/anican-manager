@@ -106,10 +106,10 @@ $this->registerJs($js);
                                 ])->label(false) ?>
                             </td>
                             <td>
-                                <?= $form->field($modelDetail, "[{$i}]quantity", $horizontalCssClasses)->textInput(['value' => 0])->label(false) ?>
+                                <?= $form->field($modelDetail, "[{$i}]quantity", $horizontalCssClasses)->textInput()->label(false) ?>
                             </td>
                             <td>
-                                <?= $form->field($modelDetail, "[{$i}]price", $horizontalCssClasses)->textInput(['value' => 0])->label(false) ?>
+                                <?= $form->field($modelDetail, "[{$i}]price", $horizontalCssClasses)->textInput()->label(false) ?>
                             </td>
                             <td>
                                 <?= $form->field($modelDetail, "[{$i}]currency", $horizontalCssClasses)->dropDownList([

@@ -94,7 +94,7 @@ $this->registerJs($js);
                                 ])->label(false) ?>
                             </td>
                             <td>
-                                <?= $form->field($modelDetail, "[{$i}]quantity", $horizontalCssClasses)->textInput(['value' => 0])->label(false) ?>
+                                <?= $form->field($modelDetail, "[{$i}]quantity", $horizontalCssClasses)->textInput()->label(false) ?>
                             </td>
                             <td>
                                 <?= $form->field($modelDetail, "[{$i}]description", $horizontalCssClasses)->textArea(['rows' => '6'])->label(false) ?>
