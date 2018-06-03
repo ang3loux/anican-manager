@@ -91,9 +91,21 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'label' => 'Razón',
                                 'attribute' => 'reason',
                                 'value' => function ($model) {
-                                    return $model->purchase->reason == 0 ? 'Compra' : 'Donación';
+                                    switch ($model->purchase->reason) {
+                                        case 0:
+                                            return 'Compra';
+
+                                        case 1:
+                                            return 'Donación';
+                                        
+                                        case 2:
+                                            return 'Otro';
+
+                                        default:
+                                            return 'Error';
+                                    }
                                 },
-                                'filter' => array('0' => 'Compra', '1' => 'Donación')
+                                'filter' => array('0' => 'Compra', '1' => 'Donación', '2' => 'Otro')
                             ],
                             // 'price',
                             // 'currency',

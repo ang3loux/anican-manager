@@ -31,7 +31,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'reason',
                 'value' => function ($model) {
-                    return $model->reason == 0 ? 'Donación' : 'Otro';
+                    switch ($model->reason) {
+                        case 0:
+                            return 'Donación';
+
+                        case 1:
+                            return 'Vencimiento';
+                        
+                        case 2:
+                            return 'Otro';
+
+                        default:
+                            return 'Error';
+                    }
                 },
                 'filter' => array('0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro')
             ],

@@ -26,7 +26,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             'code',
                             [
                                 'attribute' => 'reason',
-                                'value' => $model->reason == 0 ? 'Compra' : 'Donación',
+                                'value' => function ($model) {
+                                    switch ($model->reason) {
+                                        case 0:
+                                            return 'Compra';
+                
+                                        case 1:
+                                            return 'Donación';
+                                        
+                                        case 2:
+                                            return 'Otro';
+                
+                                        default:
+                                            return 'Error';
+                                    }
+                                },
                             ],
                             'supplier',
                             'date',
