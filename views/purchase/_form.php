@@ -128,7 +128,7 @@ $this->registerJs($js);
             <?php DynamicFormWidget::end(); ?>
         </div>
         <div class="box-footer text-center">
-            <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             <?= Html::a('Cancelar', ['index'], ['class' => 'btn btn-default']) ?>
         </div>
     <?php ActiveForm::end(); ?>
