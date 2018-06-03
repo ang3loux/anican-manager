@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return $model->reason == 0 ? 'Donación' : 'Otro';
                 },
-                'filter' => array('0' => 'Donación', '1' => 'Otro')
+                'filter' => array('0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro')
             ],
             'customer',
             [

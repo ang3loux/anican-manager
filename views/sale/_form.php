@@ -37,7 +37,7 @@ $this->registerJs($js);
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form', 'layout' => 'horizontal']); ?>
         <div class="box-body">
             <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'reason')->radioList(['0' => 'Donación', '1' => 'Otro']); ?>
+            <?= $form->field($model, 'reason')->radioList(['0' => 'Donación', '1' => 'Vencimiento', '2' => 'Otro']); ?>
             <?= $form->field($model, 'customer')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'date')->widget(DatePicker::className(), [
                 'options' => ['class' => 'form-control'],
