@@ -89,7 +89,7 @@ class ItemController extends Controller
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->uploadImage()) {
                 if ($model->save(false)) {
-                    Yii::$app->getSession()->setFlash('success', 'Item creado <b>exitosamente</b>.');
+                    Yii::$app->getSession()->setFlash('success', 'Item registrado <b>exitosamente</b>.');
                     return $this->redirect(['index']);
                 }
             }
