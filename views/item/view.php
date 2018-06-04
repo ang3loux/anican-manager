@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'description',
                             [
                                 'attribute' => 'cooled',
-                                'value' => $model->cooled == 0 ? 'No' : 'Si',
+                                'value' => Yii::$app->params['yesNo'][$model->cooled]
                             ],
                             'unit',
                             'stock',

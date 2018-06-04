@@ -2,6 +2,14 @@
 
 return [
     'adminEmail' => 'admin@example.com',
+    'personRoles' => [
+        0 => 'Persona',
+        1 => 'Paciente'
+    ],
+    'yesNo' => [
+        0 => 'No',
+        1 => 'Si'
+    ],
     'purchaseReasons' => [
         0 => 'Compra',
         1 => 'Donación',

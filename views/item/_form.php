@@ -17,7 +17,7 @@ use yii\bootstrap\ActiveForm;
             <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'description')->textArea(['rows' => '6']) ?>
-            <?= $form->field($model, 'cooled')->radioList(['0' => 'No', '1' => 'Si']); ?>
+            <?= $form->field($model, 'cooled')->radioList(Yii::$app->params['yesNo']); ?>
             <?= $form->field($model, 'unit')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'imageFile')->fileInput(['required' => empty($model->image), 'onChange'=>'readURL(this);']) ?>
             <div class="row center-col">

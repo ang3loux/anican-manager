@@ -30,9 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'cooled',
                 'value' => function ($model) {
-                    return $model->cooled == 0 ? 'No' : 'Si';
+                    return Yii::$app->params['yesNo'][$model->cooled];
                 },
-                'filter' => array('0' => 'No', '1' => 'Si')
+                'filter' => Yii::$app->params['yesNo']
             ],
             //'unit',
             'stock',
