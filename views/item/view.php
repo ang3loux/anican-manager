@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'id',
                             'code',
                             'name',
-                            'description',
+                            'description:ntext',
                             [
                                 'attribute' => 'cooled',
                                 'value' => Yii::$app->params['yesNo'][$model->cooled]
