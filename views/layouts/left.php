@@ -9,12 +9,23 @@
                     ['label' => 'Menu', 'options' => ['class' => 'header']],
                     ['label' => 'Inicio', 'icon' => 'home', 'url' => ['/']],
                     [
+                        'label' => 'Personas',
+                        'icon' => 'users',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Personas', 'icon' => 'list', 'url' => ['/person'],],
+                            ['label' => 'Pacientes', 'icon' => 'list', 'url' => ['/patient'],],
+                            ['label' => 'Registrar persona', 'icon' => 'plus', 'url' => ['/person/create'],],
+                            ['label' => 'Registrar paciente', 'icon' => 'plus', 'url' => ['/patient/create'],],
+                        ],
+                    ],
+                    [
                         'label' => 'Items',
                         'icon' => 'shopping-basket',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Lista de items', 'icon' => 'list', 'url' => ['/item'],],
-                            ['label' => 'Crear item', 'icon' => 'plus', 'url' => ['/item/create'],],
+                            ['label' => 'Items', 'icon' => 'list', 'url' => ['/item'],],
+                            ['label' => 'Registrar item', 'icon' => 'plus', 'url' => ['/item/create'],],
                         ],
                     ],
                     [
@@ -22,7 +33,7 @@
                         'icon' => 'download',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Lista de entradas', 'icon' => 'list', 'url' => ['/purchase'],],
+                            ['label' => 'Entradas', 'icon' => 'list', 'url' => ['/purchase'],],
                             ['label' => 'Registrar entrada', 'icon' => 'plus', 'url' => ['/purchase/create'],],
                         ],
                     ],
@@ -31,7 +42,7 @@
                         'icon' => 'upload',
                         'url' => '#',
                         'items' => [
-                            ['label' => 'Lista de salidas', 'icon' => 'list', 'url' => ['/sale'],],
+                            ['label' => 'Salidas', 'icon' => 'list', 'url' => ['/sale'],],
                             ['label' => 'Registrar salida', 'icon' => 'plus', 'url' => ['/sale/create'],],
                         ],
                     ],
