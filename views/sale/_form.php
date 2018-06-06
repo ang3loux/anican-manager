@@ -89,8 +89,7 @@ $this->registerJs($js);
                             </td>
                             <td>
                                 <?= $form->field($modelDetail, "[{$i}]item_id", $horizontalCssClasses)->widget(Select2::className(), [
-                                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name'),
-                                    'disabled' => !$modelDetail->isNewRecord
+                                    'data' => ArrayHelper::map(Item::find()->all(), 'id', 'name')
                                 ])->label(false) ?>
                             </td>
                             <td>
