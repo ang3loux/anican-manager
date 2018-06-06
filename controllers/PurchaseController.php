@@ -278,8 +278,8 @@ class PurchaseController extends Controller
         if ($valid) {
             $transaction = \Yii::$app->db->beginTransaction();
             try {
-                foreach ($modelItems as $modelDetail) {
-                    if (!($flag = $modelDetail->save())) {
+                foreach ($modelItems as $modelItem) {
+                    if (!($flag = $modelItem->save())) {
                         $transaction->rollBack();
                         break;
                     }
