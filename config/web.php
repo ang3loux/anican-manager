@@ -69,9 +69,9 @@ $config = [
             ],
         ],
         */
-        'language' => 'es',
     ],
     'params' => $params,
+    'language' => 'es-AR',
 ];
 
 if (YII_ENV_DEV) {
