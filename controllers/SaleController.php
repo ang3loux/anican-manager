@@ -135,7 +135,7 @@ class SaleController extends Controller
                         if ($flag) {
                             $transaction->commit();
                             Yii::$app->getSession()->setFlash('success', 'Salida registrada <b>exitosamente</b>.');
-                            return $this->redirect(['index']);
+                            return $this->redirect(['view', 'id' => $model->id]);
                         }
                     } catch (Exception $e) {
                         $transaction->rollBack();
@@ -249,7 +249,7 @@ class SaleController extends Controller
                         if ($flag) {
                             $transaction->commit();
                             Yii::$app->getSession()->setFlash('success', 'Salida actualizada <b>exitosamente</b>.');
-                            return $this->redirect(['index']);
+                            return $this->redirect(['view', 'id' => $model->id]);
                         }
                     } catch (Exception $e) {
                         $transaction->rollBack();

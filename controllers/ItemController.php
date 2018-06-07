@@ -90,7 +90,7 @@ class ItemController extends Controller
             if ($model->uploadImage()) {
                 if ($model->save(false)) {
                     Yii::$app->getSession()->setFlash('success', 'Item registrado <b>exitosamente</b>.');
-                    return $this->redirect(['index']);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         }
@@ -120,7 +120,7 @@ class ItemController extends Controller
             if ($valid) {
                 if ($model->save(false)) {
                     Yii::$app->getSession()->setFlash('success', 'Item actualizado <b>exitosamente</b>.');
-                    return $this->redirect(['index']);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         }

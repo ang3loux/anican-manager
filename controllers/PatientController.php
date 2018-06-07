@@ -129,7 +129,7 @@ class PatientController extends Controller
                             if ($flag) {
                                 $transaction->commit();
                                 Yii::$app->getSession()->setFlash('success', 'Paciente registrado <b>exitosamente</b>.');
-                                return $this->redirect(['index']);
+                                return $this->redirect(['view', 'id' => $model->id]);
                             }
                         }
                     } catch (Exception $e) {
@@ -212,7 +212,7 @@ class PatientController extends Controller
                             if ($flag) {
                                 $transaction->commit();
                                 Yii::$app->getSession()->setFlash('success', 'Paciente actualizado <b>exitosamente</b>.');
-                                return $this->redirect(['index']);
+                                return $this->redirect(['view', 'id' => $model->id]);
                             }
                         }
                     } catch (Exception $e) {

@@ -88,7 +88,7 @@ class PersonController extends Controller
             if ($model->uploadImage()) {
                 if ($model->save(false)) {
                     Yii::$app->getSession()->setFlash('success', 'Persona registrada <b>exitosamente</b>.');
-                    return $this->redirect(['index']);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         }
@@ -119,7 +119,7 @@ class PersonController extends Controller
             if ($valid) {
                 if ($model->save(false)) {
                     Yii::$app->getSession()->setFlash('success', 'Persona actualizada <b>exitosamente</b>.');
-                    return $this->redirect(['index']);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         }

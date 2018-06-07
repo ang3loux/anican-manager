@@ -119,7 +119,7 @@ class PurchaseController extends Controller
                         if ($flag) {
                             $transaction->commit();
                             Yii::$app->getSession()->setFlash('success', 'Entrada registrada <b>exitosamente</b>.');
-                            return $this->redirect(['index']);
+                            return $this->redirect(['view', 'id' => $model->id]);
                         }
                     } catch (Exception $e) {
                         $transaction->rollBack();
@@ -235,7 +235,7 @@ class PurchaseController extends Controller
                         if ($flag) {
                             $transaction->commit();
                             Yii::$app->getSession()->setFlash('success', 'Entrada actualizada <b>exitosamente</b>.');
-                            return $this->redirect(['index']);
+                            return $this->redirect(['view', 'id' => $model->id]);
                         }
                     } catch (Exception $e) {
                         $transaction->rollBack();
