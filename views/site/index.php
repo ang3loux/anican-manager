@@ -13,6 +13,35 @@ $this->title = 'Home';
     </div>
     <div class="row text-center center-col">
         <div class="col-md-3">
+            <a href="<?= Url::toRoute('/person') ?>">
+                <div class="small-box bg-blue">
+                    <div class="inner">
+                        <h3>Personas</h3>
+                        <p>Listado de personas</p>
+                    </div>
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <a href="<?= Url::toRoute('/patient') ?>">
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>Pacientes</h3>
+                        <p>Listado de pacientes</p>
+                    </div>
+                    <div class="icon">
+                        <i class="glyphicon glyphicon-heart"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row text-center center-col">
+        <div class="col-md-3">
             <a href="<?= Url::toRoute('/item') ?>">
                 <div class="small-box bg-aqua">
                     <div class="inner">
