@@ -21,13 +21,27 @@ class m160917_145105_create_purchase_table extends Migration
             'id' => $this->primaryKey(),
             'code' => $this->string()->defaultValue('')->notNull(),
             'reason' => $this->integer(1)->defaultValue(0)->notNull(),
-            'supplier' => $this->string()->defaultValue('')->notNull(),
+            'person_id' => $this->integer()->notNull(),
             'date' => $this->date()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
             'updated_by' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->createIndex(
+            'idx-purchase-person_id',
+            'purchase',
+            'person_id'
+        );
+        $this->addForeignKey(
+            'fk-purchase-person_id',
+            'purchase',
+            'person_id',
+            'person',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**

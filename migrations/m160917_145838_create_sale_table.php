@@ -21,13 +21,27 @@ class m160917_145838_create_sale_table extends Migration
             'id' => $this->primaryKey(),
             'code' => $this->string()->defaultValue('')->notNull(),
             'reason' => $this->integer(1)->defaultValue(0)->notNull(),
-            'customer' => $this->string()->defaultValue('')->notNull(),
+            'person_id' => $this->integer()->notNull(),
             'date' => $this->date()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
             'updated_by' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->createIndex(
+            'idx-sale-person_id',
+            'sale',
+            'person_id'
+        );
+        $this->addForeignKey(
+            'fk-sale-person_id',
+            'sale',
+            'person_id',
+            'person',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**

@@ -34,6 +34,8 @@ use yii\behaviors\BlameableBehavior;
  *
  * @property Relationship[] $patientRelationships
  * @property Relationship[] $personRelationships
+ * @property Purchase[] $purchases
+ * @property Sale[] $sales
  */
 class Person extends \yii\db\ActiveRecord
 {
@@ -121,6 +123,22 @@ class Person extends \yii\db\ActiveRecord
     public function getPersonRelationships()
     {
         return $this->hasMany(Relationship::className(), ['person_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPurchases()
+    {
+        return $this->hasMany(Purchase::className(), ['person_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSales()
+    {
+        return $this->hasMany(Sale::className(), ['person_id' => 'id']);
     }
 
     public function uploadImage()

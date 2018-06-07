@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Person */
@@ -64,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php Pjax::begin(); ?>
             <div class="row">
-                <div class="col-md-6">
+            <div class="col-md-6">
                     <h2><i class="fa fa-users" aria-hidden="true"></i> Relaciones:</h2>
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderRelationship,
@@ -107,7 +108,57 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                     ]); ?>
                 </div>
-                <!-- Purchase Gridview -->
+
+                <div class="col-md-6">
+                    <h2><i class="fa fa-download" aria-hidden="true"></i> Entradas:</h2>
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProviderPurchase,
+                        'filterModel' => $searchModelPurchase,
+                        'layout'=> "{items}\n{summary}\n{pager}",
+                        'columns' => [
+                            //'id',
+                            'code',
+                            [
+                                'attribute' => 'reason',
+                                'value' => function ($model) {
+                                    return Yii::$app->params['purchaseReasons'][$model->reason];
+                                },
+                                'filter' => Yii::$app->params['purchaseReasons']
+                            ],
+                            //'person_id',
+                            [
+                                'label' => 'Fecha de entrada',
+                                'attribute' => 'date',
+                                'value' => 'date',
+                                'filter' => DatePicker::widget([
+                                    'model' => $searchModelPurchase,
+                                    'attribute' => 'date',
+                                    'language' => 'es',
+                                    'dateFormat' => 'yyyy-MM-dd',
+                                    'options' => ['class' => 'datepicker-input']
+                                ]),
+                                'format' => 'html',
+                            ],
+                            //'created_at',
+                            //'created_by',
+                            //'updated_at',
+                            //'updated_by',
+                            [
+                                'class'    => 'yii\grid\ActionColumn',
+                                'template' => '{view}',
+                                'buttons'  => [
+                                    'view'   => function ($url, $modelPurchase) {
+                                        $url = Url::to(['purchase/view', 'id' => $modelPurchase->id]);
+                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                            'title' => 'view',
+                                            'data-pjax' => '0',
+                                        ]);
+                                    },
+                                ]
+                            ]
+                        ],
+                    ]); ?>
+                </div>
             </div>
             <?php Pjax::end(); ?>
         </div>

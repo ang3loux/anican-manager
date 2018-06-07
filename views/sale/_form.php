@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Person;
 use app\models\Item;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -48,7 +49,9 @@ $this->registerJs($js);
         <div class="box-body">
             <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'reason')->radioList(Yii::$app->params['saleReasons']); ?>
-            <?= $form->field($model, 'customer')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, "person_id")->widget(Select2::className(), [
+                'data' => ArrayHelper::map(Person::find()->where(['role' => [1, 2]])->all(), 'id', 'fullname')
+            ]) ?>
             <?= $form->field($model, 'date')->widget(DatePicker::className(), [
                 'options' => ['class' => 'form-control'],
                 'dateFormat' => 'yyyy-MM-dd'

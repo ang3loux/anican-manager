@@ -6,6 +6,7 @@ use Yii;
 use app\models\Person;
 use app\models\PersonSearch;
 use app\models\RelationshipSearch;
+use app\models\PurchaseSearch;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
@@ -59,17 +60,17 @@ class PersonController extends Controller
         $dataProviderRelationship->pagination->pageParam = "page-relationship";
         $dataProviderRelationship->sort->sortParam = "sort-relationship";
 
-        // $searchModelPurchase = new PurchaseDetailSearch();
-        // $dataProviderPurchase = $searchModelPurchase->searchByPerson(Yii::$app->request->queryParams, $id);
-        // $dataProviderPurchase->pagination->pageParam = "page-purchase";
-        // $dataProviderPurchase->sort->sortParam = "sort-purchase";
+        $searchModelPurchase = new PurchaseSearch();
+        $dataProviderPurchase = $searchModelPurchase->searchByPerson(Yii::$app->request->queryParams, $id);
+        $dataProviderPurchase->pagination->pageParam = "page-purchase";
+        $dataProviderPurchase->sort->sortParam = "sort-purchase";
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModelRelationship' => $searchModelRelationship,
             'dataProviderRelationship' => $dataProviderRelationship,
-            // 'searchModelPurchase' => $searchModelPurchase,
-            // 'dataProviderPurchase' => $dataProviderPurchase,
+            'searchModelPurchase' => $searchModelPurchase,
+            'dataProviderPurchase' => $dataProviderPurchase,
         ]);
     }
 
@@ -141,16 +142,22 @@ class PersonController extends Controller
         $model = $this->findModel($id);
         
         if ($model->role != 2) {
-            // if (empty($model->purchases) && empty($model->sales)) {
-                $model->deleteImage();
-                $model->delete();
-                Yii::$app->getSession()->setFlash('success', 'Persona eliminada <b>exitosamente</b>.');
-                return $this->redirect(['index']);
-            // }
-    
-            // Yii::$app->getSession()->setFlash('error', 'Esta persona tiene asociada entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
-            // return $this->redirect(['view', 'id' => $model->id]);
+            if (empty($model->personRelationships)) {
+                if (empty($model->purchases) && empty($model->sales)) {
+                    $model->deleteImage();
+                    $model->delete();
+                    Yii::$app->getSession()->setFlash('success', 'Persona eliminada <b>exitosamente</b>.');
+                    return $this->redirect(['index']);
+                } else {
+                    Yii::$app->getSession()->setFlash('error', 'Esta persona tiene asociada entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
+                }
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Esta persona es representante de uno o más pacientes, por lo tanto <b>no se puede eliminar</b>.'); 
+            }    
+            
+            return $this->redirect(['view', 'id' => $model->id]);
         }
+
         Yii::$app->getSession()->setFlash('error', 'Usuario anónimo <b>no se puede eliminar</b>.');
         return $this->redirect(['index']);
     }

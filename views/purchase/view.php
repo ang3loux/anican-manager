@@ -30,7 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     return Yii::$app->params['purchaseReasons'][$model->reason];
                                 },
                             ],
-                            'supplier',
+                            [
+                                'attribute' => 'person_id',
+                                'value' => function ($model) {
+                                    $url = Url::to(['person/view', 'id' => $model->person->id]);
+                                    return Html::a($model->person->fullname, $url);
+                                },
+                                'format' => 'html'
+                            ],
                             'date',
                             // 'created_at',
                             // 'created_by',

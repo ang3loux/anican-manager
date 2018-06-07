@@ -1,8 +1,11 @@
 <?php
 
+use app\models\Person;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\select2\Select2;
 use yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
@@ -35,7 +38,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'filter' => Yii::$app->params['saleReasons']
             ],
-            'customer',
+            [
+                'attribute' => 'person_id',
+                'value' => function ($model) {
+                    return $model->person->fullname;
+                },
+                'filter' => Select2::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'person_id',
+                    'data' => ArrayHelper::map(Person::find()->where(['role' => [1, 2]])->all(), 'fullname', 'fullname'),
+                    'options' => ['placeholder' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ])
+            ],
             [
                 // 'label' => 'Fecha de entrada',
                 'attribute' => 'date',

@@ -7,6 +7,7 @@ use app\models\Person;
 use app\models\PersonSearch;
 use app\models\Relationship;
 use app\models\RelationshipSearch;
+use app\models\SaleSearch;
 use app\models\Model;
 use yii\web\Controller;
 use yii\web\UploadedFile;
@@ -62,17 +63,17 @@ class PatientController extends Controller
         $dataProviderRelationship->pagination->pageParam = "page-relationship";
         $dataProviderRelationship->sort->sortParam = "sort-relationship";
 
-        // $searchModelSale = new SaleDetailSearch();
-        // $dataProviderSale = $searchModelSale->searchByPatient(Yii::$app->request->queryParams, $id);
-        // $dataProviderSale->pagination->pageParam = "page-sale";
-        // $dataProviderSale->sort->sortParam = "sort-sale";
+        $searchModelSale = new SaleSearch();
+        $dataProviderSale = $searchModelSale->searchByPerson(Yii::$app->request->queryParams, $id);
+        $dataProviderSale->pagination->pageParam = "page-sale";
+        $dataProviderSale->sort->sortParam = "sort-sale";
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModelRelationship' => $searchModelRelationship,
             'dataProviderRelationship' => $dataProviderRelationship,
-            // 'searchModelSale' => $searchModelSale,
-            // 'dataProviderSale' => $dataProviderSale,
+            'searchModelSale' => $searchModelSale,
+            'dataProviderSale' => $dataProviderSale,
         ]);
     }
 
@@ -240,7 +241,7 @@ class PatientController extends Controller
         $model = $this->findModel($id);
         $modelRelationships = $model->patientRelationships;
        
-        // if (empty($model->purchases) && empty($model->sales)) {
+        if (empty($model->purchases) && empty($model->sales)) {
             $transaction = \Yii::$app->db->beginTransaction();
             try {
                 $model->deleteImage();
@@ -254,10 +255,10 @@ class PatientController extends Controller
             } catch (Exception $e) {
                 $transaction->rollBack();
             }
-        // }
+        }
 
-        // Yii::$app->getSession()->setFlash('error', 'Este paciente tiene asociado entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
-        // return $this->redirect(['view', 'id' => $id]);
+        Yii::$app->getSession()->setFlash('error', 'Este paciente tiene asociado entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
+        return $this->redirect(['view', 'id' => $id]);
     }
 
     /**
