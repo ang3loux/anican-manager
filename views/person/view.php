@@ -65,51 +65,112 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php Pjax::begin(); ?>
             <div class="row">
-            <div class="col-md-6">
-                    <h2><i class="fa fa-users" aria-hidden="true"></i> Relaciones:</h2>
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProviderRelationship,
-                        'filterModel' => $searchModelRelationship,
-                        'layout'=> "{items}\n{summary}\n{pager}",
-                        'columns' => [
-                            //'id',
-                            [
-                                'attribute' => 'patient_id',
-                                'value' => 'patient.fullname',
-                            ],
-                            //person_id,
-                            [
-                                'attribute' => 'relationship',
-                                'value' => function ($model) {
-                                    return Yii::$app->params['patientRelationships'][$model->relationship];
-                                },
-                                'filter' => Yii::$app->params['patientRelationships']
-                            ],
-                            [
-                                'attribute' => 'description',
-                                'value' => function ($model) {
-                                    return empty($model->description) ? '-' : $model->description;
-                                },
-                                'format' => 'ntext'
-                            ],
-                            [
-                                'class'    => 'yii\grid\ActionColumn',
-                                'template' => '{view}',
-                                'buttons'  => [
-                                    'view'   => function ($url, $modelRelationship) {
-                                        $url = Url::to(['patient/view', 'id' => $modelRelationship->patient->id]);
-                                        return Html::a('<span class="fa fa-eye"></span>', $url, [
-                                            'title' => 'view',
-                                            'data-pjax' => '0',
-                                        ]);
-                                    },
-                                ]
-                            ]
-                        ],
-                    ]); ?>
+                <?= $model->role != 2 ?
+                    '<div class="col-md-6">
+                        <h2><i class="fa fa-users" aria-hidden="true"></i> Relaciones:</h2>
+                    '
+                :
+                    '<div class="col-md-6 col-md-push-6">
+                        <h2><i class="fa fa-upload" aria-hidden="true"></i> Salidas:</h2>
+                    '
+                ?>
+                    <?= $model->role != 2 ?
+                            GridView::widget([
+                                'dataProvider' => $dataProviderRelationship,
+                                'filterModel' => $searchModelRelationship,
+                                'layout'=> "{items}\n{summary}\n{pager}",
+                                'columns' => [
+                                    //'id',
+                                    [
+                                        'attribute' => 'patient_id',
+                                        'value' => 'patient.fullname',
+                                    ],
+                                    //person_id,
+                                    [
+                                        'attribute' => 'relationship',
+                                        'value' => function ($model) {
+                                            return Yii::$app->params['patientRelationships'][$model->relationship];
+                                        },
+                                        'filter' => Yii::$app->params['patientRelationships']
+                                    ],
+                                    [
+                                        'attribute' => 'description',
+                                        'value' => function ($model) {
+                                            return empty($model->description) ? '-' : $model->description;
+                                        },
+                                        'format' => 'ntext'
+                                    ],
+                                    [
+                                        'class'    => 'yii\grid\ActionColumn',
+                                        'template' => '{view}',
+                                        'buttons'  => [
+                                            'view'   => function ($url, $modelRelationship) {
+                                                $url = Url::to(['patient/view', 'id' => $modelRelationship->patient->id]);
+                                                return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                                    'title' => 'view',
+                                                    'data-pjax' => '0',
+                                                ]);
+                                            },
+                                        ]
+                                    ]
+                                ],
+                            ])
+                        :
+                            GridView::widget([
+                                'dataProvider' => $dataProviderSale,
+                                'filterModel' => $searchModelSale,
+                                'layout'=> "{items}\n{summary}\n{pager}",
+                                'columns' => [
+                                    //'id',
+                                    'code',
+                                    [
+                                        'attribute' => 'reason',
+                                        'value' => function ($model) {
+                                            return Yii::$app->params['saleReasons'][$model->reason];
+                                        },
+                                        'filter' => Yii::$app->params['saleReasons']
+                                    ],
+                                    //'person_id',
+                                    [
+                                        'label' => 'Fecha de salida',
+                                        'attribute' => 'date',
+                                        'value' => 'date',
+                                        'filter' => DatePicker::widget([
+                                            'model' => $searchModelSale,
+                                            'attribute' => 'date',
+                                            'language' => 'es',
+                                            'dateFormat' => 'yyyy-MM-dd',
+                                            'options' => ['class' => 'datepicker-input']
+                                        ]),
+                                        'format' => 'html',
+                                    ],
+                                    //'created_at',
+                                    //'created_by',
+                                    //'updated_at',
+                                    //'updated_by',
+                                    [
+                                        'class'    => 'yii\grid\ActionColumn',
+                                        'template' => '{view}',
+                                        'buttons'  => [
+                                            'view'   => function ($url, $modelSale) {
+                                                $url = Url::to(['sale/view', 'id' => $modelSale->id]);
+                                                return Html::a('<span class="fa fa-eye"></span>', $url, [
+                                                    'title' => 'view',
+                                                    'data-pjax' => '0',
+                                                ]);
+                                            },
+                                        ]
+                                    ]
+                                ],
+                            ])                    
+                    ?>
                 </div>
 
-                <div class="col-md-6">
+                <?= $model->role != 2 ?
+                    '<div class="col-md-6">'
+                :
+                    '<div class="col-md-6 col-md-pull-6">'
+                ?>   
                     <h2><i class="fa fa-download" aria-hidden="true"></i> Entradas:</h2>
                     <?= GridView::widget([
                         'dataProvider' => $dataProviderPurchase,

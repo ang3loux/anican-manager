@@ -7,6 +7,7 @@ use app\models\Person;
 use app\models\PersonSearch;
 use app\models\RelationshipSearch;
 use app\models\PurchaseSearch;
+use app\models\SaleSearch;
 use yii\web\Controller;
 use yii\web\UploadedFile;
 use yii\web\NotFoundHttpException;
@@ -65,12 +66,19 @@ class PersonController extends Controller
         $dataProviderPurchase->pagination->pageParam = "page-purchase";
         $dataProviderPurchase->sort->sortParam = "sort-purchase";
 
+        $searchModelSale = new SaleSearch();
+        $dataProviderSale = $searchModelSale->searchByPerson(Yii::$app->request->queryParams, $id);
+        $dataProviderSale->pagination->pageParam = "page-sale";
+        $dataProviderSale->sort->sortParam = "sort-sale";
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'searchModelRelationship' => $searchModelRelationship,
             'dataProviderRelationship' => $dataProviderRelationship,
             'searchModelPurchase' => $searchModelPurchase,
             'dataProviderPurchase' => $dataProviderPurchase,
+            'searchModelSale' => $searchModelSale,
+            'dataProviderSale' => $dataProviderSale,
         ]);
     }
 
