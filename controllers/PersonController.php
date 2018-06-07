@@ -109,7 +109,7 @@ class PersonController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->role != 2 && $model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             $valid = true;
             if (!empty($model->imageFile)) {
@@ -140,15 +140,19 @@ class PersonController extends Controller
     {
         $model = $this->findModel($id);
         
-        // if (empty($model->purchases) && empty($model->sales)) {
-            $model->deleteImage();
-            $model->delete();
-            Yii::$app->getSession()->setFlash('success', 'Persona eliminada <b>exitosamente</b>.');
-            return $this->redirect(['index']);
-        // }
-
-        // Yii::$app->getSession()->setFlash('error', 'Esta persona tiene asociada entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
-        // return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->role != 2) {
+            // if (empty($model->purchases) && empty($model->sales)) {
+                $model->deleteImage();
+                $model->delete();
+                Yii::$app->getSession()->setFlash('success', 'Persona eliminada <b>exitosamente</b>.');
+                return $this->redirect(['index']);
+            // }
+    
+            // Yii::$app->getSession()->setFlash('error', 'Esta persona tiene asociada entrada o salida de items, por lo tanto <b>no se puede eliminar</b>.');
+            // return $this->redirect(['view', 'id' => $model->id]);
+        }
+        Yii::$app->getSession()->setFlash('error', 'Usuario anónimo <b>no se puede eliminar</b>.');
+        return $this->redirect(['index']);
     }
 
     /**

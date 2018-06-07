@@ -60,7 +60,7 @@ class PersonSearch extends Person
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'role' => $personRole,
+            'role' => [$personRole, $personRole == 0 ? 2 : $personRole],
             'birthdate' => $this->birthdate,
             'decease' => $this->decease,
             'deathdate' => $this->deathdate,

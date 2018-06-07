@@ -39,6 +39,11 @@ class m160917_142870_create_person_table extends Migration
             'updated_at' => $this->integer()->notNull(),
             'updated_by' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->batchInsert('person',
+            ['role', 'fullname', 'birthdate', 'document', 'email', 'phone1', 'address', 'decease', 'date', 'image', 'created_at', 'created_by', 'updated_at', 'updated_by'], 
+            [['2', 'Anónimo', '2018-01-01', '-', '-', '-', '-', '0', '2018-01-01', 'images/anonym.png', '1514764800', '1', '1514764800', '1']]
+        );
     }
 
     /**

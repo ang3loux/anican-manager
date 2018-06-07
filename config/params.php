@@ -4,7 +4,8 @@ return [
     'adminEmail' => 'admin@example.com',
     'personRoles' => [
         0 => 'Persona',
-        1 => 'Paciente'
+        1 => 'Paciente',
+        2 => 'Anónimo'
     ],
     'relationships' => [
         0 => 'Padre',
