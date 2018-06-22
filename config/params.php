@@ -49,5 +49,13 @@ return [
     'uploadPath' => [
         'persons' => 'uploads/person-images/',
         'items' => 'uploads/item-images/'
+    ],
+    'sex' => [
+        'M' => 'Masculino',
+        'F' => 'Femenino'
+    ],
+    'active' => [
+        0 => 'Inactivo',
+        1 => 'Activo'
     ]
 ];

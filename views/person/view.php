@@ -28,6 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'value' => Yii::$app->params['personRoles'][$model->role]
                             ],
                             'fullname',
+                            [
+                                'attribute' => 'sex',
+                                'value' => Yii::$app->params['sex'][$model->sex]
+                            ],
                             'birthdate',
                             //'birthplace:ntext',
                             'document',
@@ -47,6 +51,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'ntext'
                             ],
                             'date',
+                            [
+                                'attribute' => 'active',
+                                'value' => Yii::$app->params['active'][$model->active]
+                            ],
                             //'created_at',
                             //'created_by',
                             //'updated_at',

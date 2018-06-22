@@ -14,6 +14,7 @@ use yii\behaviors\BlameableBehavior;
  * @property int $id
  * @property int $role
  * @property string $fullname
+ * @property string $sex
  * @property string $birthdate
  * @property string $birthplace
  * @property string $document
@@ -26,6 +27,7 @@ use yii\behaviors\BlameableBehavior;
  * @property string $deathdate
  * @property string $description
  * @property string $date
+ * @property int $active
  * @property string $image
  * @property int $created_at
  * @property int $created_by
@@ -61,12 +63,13 @@ class Person extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['role', 'fullname', 'birthdate', 'document', 'email', 'phone1', 'address', 'date'], 'required', 'on' => self::SCENARIO_PERSON],
-            [['role', 'fullname', 'birthdate', 'birthplace', 'email', 'phone1', 'address', 'diagnosis', 'decease', 'date'], 'required', 'on' => self::SCENARIO_PATIENT],
-            [['role', 'decease', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['role', 'fullname', 'sex', 'birthdate', 'document', 'email', 'phone1', 'address', 'date', 'active'], 'required', 'on' => self::SCENARIO_PERSON],
+            [['role', 'fullname', 'sex', 'birthdate', 'birthplace', 'email', 'phone1', 'address', 'diagnosis', 'decease', 'date', 'active'], 'required', 'on' => self::SCENARIO_PATIENT],
+            [['role', 'decease', 'active', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['birthdate', 'deathdate', 'date'], 'safe'],
             [['birthplace', 'address', 'diagnosis', 'description'], 'string'],
             [['fullname', 'document', 'email', 'phone1', 'phone2', 'image'], 'string', 'max' => 255],
+            [['sex'], 'string', 'max' => 1],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
@@ -88,6 +91,7 @@ class Person extends \yii\db\ActiveRecord
             'id' => 'ID',
             'role' => 'Rol',
             'fullname' => 'Nombre completo',
+            'sex' => 'Sexo',
             'birthdate' => 'Fecha de nacimiento',
             'birthplace' => 'Lugar de nacimiento',
             'document' => 'C.I.',
@@ -100,6 +104,7 @@ class Person extends \yii\db\ActiveRecord
             'deathdate' => 'Fecha de fallecimiento',
             'description' => 'Descripción',
             'date' => 'Fecha de ingreso',
+            'active' => '¿Activo?',
             'image' => 'Imagen',
             'imageFile' => 'Imagen',
             'created_at' => 'Created At',

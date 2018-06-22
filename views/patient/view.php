@@ -29,6 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                             'fullname',
                             [
+                                'attribute' => 'sex',
+                                'value' => Yii::$app->params['sex'][$model->sex]
+                            ],
+                            [
                                 'attribute' => 'birthdate',
                                 'value' => function ($model) {
                                     $from = new DateTime($model->birthdate);
@@ -63,6 +67,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'format' => 'ntext'
                             ],
                             'date',
+                            [
+                                'attribute' => 'active',
+                                'value' => Yii::$app->params['active'][$model->active]
+                            ],
                             //'created_at',
                             //'created_by',
                             //'updated_at',

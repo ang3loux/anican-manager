@@ -21,6 +21,7 @@ class m160917_142870_create_person_table extends Migration
             'id' => $this->primaryKey(),
             'role' => $this->integer(1)->defaultValue(0)->notNull(),
             'fullname' => $this->string()->notNull(),
+            'sex' => $this->string(1)->notNull(),
             'birthdate' => $this->date()->notNull(),
             'birthplace' => $this->text(),
             'document' => $this->string(),
@@ -33,6 +34,7 @@ class m160917_142870_create_person_table extends Migration
             'deathdate' => $this->date(),
             'description' => $this->text(),
             'date' => $this->date()->notNull(),
+            'active' => $this->integer(1)->notNull(),
             'image' => $this->string()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'created_by' => $this->integer()->notNull(),
@@ -41,8 +43,8 @@ class m160917_142870_create_person_table extends Migration
         ], $tableOptions);
 
         $this->batchInsert('person',
-            ['role', 'fullname', 'birthdate', 'document', 'email', 'phone1', 'address', 'decease', 'date', 'image', 'created_at', 'created_by', 'updated_at', 'updated_by'], 
-            [['2', 'Anónimo', '2018-01-01', '-', '-', '-', '-', '0', '2018-01-01', 'images/anonym.png', '1514764800', '1', '1514764800', '1']]
+            ['role', 'fullname', 'sex', 'birthdate', 'document', 'email', 'phone1', 'address', 'decease', 'date', 'active', 'image', 'created_at', 'created_by', 'updated_at', 'updated_by'], 
+            [['2', 'Anónimo', 'M', '2018-01-01', '-', '-', '-', '-', '0', '2018-01-01', '1', 'images/anonym.png', '1514764800', '1', '1514764800', '1']]
         );
     }
 

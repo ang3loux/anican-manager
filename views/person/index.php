@@ -27,6 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             //'role',
             'fullname',
+            [
+                'attribute' => 'sex',
+                'value' => function ($model) {
+                    return Yii::$app->params['sex'][$model->sex];
+                },
+                'filter' => Yii::$app->params['sex']
+            ],
             //'birthdate',
             //'birthplace:ntext',
             'document',
@@ -39,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'deathdate',
             //'description:ntext',
             //'date',
+            //'active',
             //'image',
             //'created_at',
             //'created_by',

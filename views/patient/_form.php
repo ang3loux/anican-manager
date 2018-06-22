@@ -52,6 +52,7 @@ $this->registerJs($js);
     ]); ?>
         <div class="box-body">
             <?= $form->field($model, 'fullname')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'sex')->radioList(Yii::$app->params['sex']); ?>
             <?= $form->field($model, 'birthdate')->widget(DatePicker::className(), [
                 'options' => ['class' => 'form-control'],
                 'dateFormat' => 'yyyy-MM-dd'
@@ -87,6 +88,7 @@ $this->registerJs($js);
                 'options' => ['class' => 'form-control'],
                 'dateFormat' => 'yyyy-MM-dd'
             ]) ?>
+            <?= $form->field($model, 'active')->radioList(Yii::$app->params['active']); ?>
             <?= $form->field($model, 'imageFile')->fileInput(['required' => empty($model->image), 'onChange'=>'readURL(this);']) ?>
             <div class="row center-col">
                 <div class="col-md-6">

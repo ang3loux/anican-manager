@@ -24,6 +24,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'fullname') ?>
 
+    <?php // echo $form->field($model, 'sex') ?>
+
     <?= $form->field($model, 'birthdate') ?>
 
     <?= $form->field($model, 'birthplace') ?>
@@ -47,6 +49,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'description') ?>
 
     <?php // echo $form->field($model, 'date') ?>
+
+    <?php // echo $form->field($model, 'active') ?>
 
     <?php // echo $form->field($model, 'image') ?>
 

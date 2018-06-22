@@ -30,6 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'role',
             'fullname',
             [
+                'attribute' => 'sex',
+                'value' => function ($model) {
+                    return Yii::$app->params['sex'][$model->sex];
+                },
+                'filter' => Yii::$app->params['sex']
+            ],
+            [
                 'attribute' => 'birthdate',
                 'value' => function ($model) {
                     $from = new DateTime($model->birthdate);
@@ -46,13 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
             ],
             //'birthplace:ntext',
-            [
-                'attribute' => 'document',
-                'value' => function ($model) {
-                    return empty($model->document) ? '-' : $model->document;
-                }
-            ],
-            'email:email',
+            //'document',
+            //'email:email',
             'phone1',
             //'phone2',
             //'address:ntext',
@@ -67,6 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'deathdate',
             //'description:ntext',
             //'date',
+            [
+                'attribute' => 'active',
+                'value' => function ($model) {
+                    return Yii::$app->params['active'][$model->active];
+                },
+                'filter' => Yii::$app->params['active']
+            ],
             //'image',
             //'created_at',
             //'created_by',

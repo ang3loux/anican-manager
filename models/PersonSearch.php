@@ -19,7 +19,7 @@ class PersonSearch extends Person
     {
         return [
             [['id', 'role', 'decease', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['fullname', 'birthdate', 'birthplace', 'document', 'email', 'phone1', 'phone2', 'address', 'diagnosis', 'deathdate', 'description', 'date', 'image'], 'safe'],
+            [['fullname', 'sex', 'birthdate', 'birthplace', 'document', 'email', 'phone1', 'phone2', 'address', 'diagnosis', 'deathdate', 'description', 'date', 'active', 'image'], 'safe'],
         ];
     }
 
@@ -65,6 +65,7 @@ class PersonSearch extends Person
             'decease' => $this->decease,
             'deathdate' => $this->deathdate,
             'date' => $this->date,
+            'active' => $this->active,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -72,6 +73,7 @@ class PersonSearch extends Person
         ]);
 
         $query->andFilterWhere(['like', 'fullname', $this->fullname])
+            ->andFilterWhere(['like', 'sex', $this->sex])
             ->andFilterWhere(['like', 'birthplace', $this->birthplace])
             ->andFilterWhere(['like', 'document', $this->document])
             ->andFilterWhere(['like', 'email', $this->email])
